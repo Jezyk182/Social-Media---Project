@@ -1,16 +1,12 @@
-import { useState } from "react";
-import axios from "axios"
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios"
 
-
-const FormLogIn = () => {
-
+const AddPostForm = () => {
     const [formData, setFormData] = useState({
-        email: "",
-        passwd: ""
+        content: "",
     });
     
-    const [LogInError, setError] = useState("")
     const navigate = useNavigate()
 
     function handleDataChange(e : any) {
@@ -28,26 +24,22 @@ const FormLogIn = () => {
     async function handleSubmit(e : any) {
         e.preventDefault();
         
-        setError("")
         try {
-            await axios.post('http://localhost:3000/api/login', formData, {
+            await axios.post('http://localhost:3000/api/addPost', formData, {
                 headers: {
                     "Content-Type": "application/json"
                 }
             })
             .then(res => {
-                if(!res.data.success) {
-                    setFormData({
-                        email: "",
-                        passwd: ""
-                    });
-                    setError(res.data.message)
-                } else {
+                if(res.data.success) {
                     navigate("/")
+                } else {
+                    navigate("/login")
                 }
             });
             // Handle success
             console.log('Form data submitted successfully');
+            console.log(formData)
         } catch (error) {
             // Handle error
             console.error('Error submitting form data:', error);
@@ -57,27 +49,17 @@ const FormLogIn = () => {
 
     const labelClass = "sad-my-1 sad-text-xl sad-py-1 sad-px-3 sad-rounded sad-text-gray-200 sad-w-full sad-bg-transparent sad-border-gray-500 sad-border sad-shadow-sm sad-shadow-gray-800"
 
-    const inputs = [
-        {name:"email", placeholder: "example@email.com", desc:"E-mail", type: "email", value: formData.email},
-        {name:"passwd", placeholder: "••••••••", desc:"Password", type: "password", value: formData.passwd},
-    ]
-
     return ( 
         <div className="sad-mx-auto sad-w-full">
             <form method="post" onSubmit={handleSubmit} className="sad-flex sad-flex-col">
-                {inputs.map((input, id) => {
-                    return (
-                        <label htmlFor={input.name} key={id} className="sad-mb-8">
-                            {input.desc}
-                            <input type={input.type} value={input.value} placeholder={input.placeholder} name={input.name} onChange={handleDataChange} className={labelClass} required/>
+                        <label htmlFor="content" className="sad-mb-8">
+                            <p>Post Content</p>
+                            <textarea value={formData.content} placeholder="One day, I..." name="content" onChange={handleDataChange} className={labelClass} rows={5} cols={50} required />
                         </label>
-                    )
-                })}
                 <button className="sad-my-1 sad-text-xl sad-py-1 sad-px-4 sad-rounded sad-text-gray-800 sad-w-fit sad-bg-blue-500 sad-font-bold">Log In</button>
             </form>
-            <p className="sad-text-red-600 sad-cursor-default sad-select-none" onDoubleClick={() => setError("")}>{LogInError}</p>
         </div>
      );
 }
  
-export default FormLogIn;
+export default AddPostForm;

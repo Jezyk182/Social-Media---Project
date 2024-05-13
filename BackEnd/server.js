@@ -4,10 +4,8 @@ import cors from "cors"
 import pg from "pg"
 import env from "dotenv"
 import bcrypt from "bcrypt";
-import passport from "passport";
 import cookieParser from "cookie-parser";
 import session from "express-session";
-import { Strategy } from "passport-local";
 
 const app = express()
 const port = 3000
@@ -46,15 +44,56 @@ const db = new pg.Client({
 db.connect()
 
 
-app.get("/api", (req, res) => {
-  if(req.session.username) {
-    return res.json({success: true, username: req.session.username})
-  } else {
-    return res.json({success: false})
+app.get("/api", async (req, res) => {
+  console.log("API request")
+
+
+
+  try {
+    const request = await db.query("SELECT content, username, email, likes FROM posts INNER JOIN users ON users.userid = posts.author_id");
+
+    if (request.rows.length > 0) {
+        return res.json({posts: request.rows})
+    }  else {
+      return res.json({success: false})
+    }
+  } catch (err) {
+    console.log(err);
   }
 })
 
+app.post("/api/addPost", async (req, res) => {
+  if(req.session.username) {
+    const data = req.body
+    const content = data.content
 
+    try {
+      const user = await db.query("SELECT userid FROM users WHERE username = $1", [req.session.username])
+      const userid = user.rows[0].userid
+      console.log(userid)
+      const d = new Date()
+      const day = d.getDay()
+      const month = d.getMonth()
+      const year = d.getFullYear()
+
+      const date = `${day}-${month}-${year}`
+      console.log(date)
+
+      const result = await db.query(
+        "INSERT INTO posts (content, author_id, date, likes, comments_count) VALUES ($1, $2, $3, $4, $5) RETURNING *",
+        [content, userid, date, 0, 0]
+      );
+
+      return res.json({message: "Success!", success: true})
+    } catch (err) {
+      console.log(err);
+    }
+      return res.json({success: true, username: req.session.username})
+  } else {
+    return res.json({success: false})
+   }
+  
+})
 
 
 
@@ -83,7 +122,6 @@ app.post('/api/register', async (req, res) => {
                 "INSERT INTO users (username, email, password) VALUES ($1, $2, $3) RETURNING *",
                 [username, email, hash]
               );
-              const user = result.rows[0]
               return res.json({message: "Success! Now log in!", success: true})
             }
           });
