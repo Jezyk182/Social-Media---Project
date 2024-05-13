@@ -26,6 +26,7 @@ const FormSignUp = () => {
     }
 
 
+    axios.defaults.withCredentials = true
 
     async function handleSubmit(e : any) {
         console.log("submit start")
@@ -41,7 +42,7 @@ const FormSignUp = () => {
                     }
                 })
                 .then(res => {
-                    if(!res.data.failure) {
+                    if(!res.data.success) {
                         setError(res.data.message)
                         setFormData({
                             username: "",
@@ -50,7 +51,7 @@ const FormSignUp = () => {
                             conPasswd: ""
                         });
                     } else {
-                        navigate("/login")
+                        return navigate("/login")
                     }
                 });
 
@@ -74,13 +75,13 @@ const FormSignUp = () => {
     }
 
 
-    const labelClass = "sad-my-1 sad-text-xl sad-py-1 sad-px-3 sad-rounded sad-text-gray-800 sad-w-full"
+    const labelClass = "sad-my-1 sad-text-xl sad-py-1 sad-px-3 sad-rounded sad-text-gray-200 sad-w-full sad-bg-transparent sad-border-gray-500 sad-border sad-shadow-sm sad-shadow-gray-800"
 
     const inputs = [
-        {name:"username", placeholder: "Username", type: "text", value: formData.username},
-        {name:"email", placeholder: "E-mail", type: "email", value: formData.email},
-        {name:"passwd", placeholder: "Password", type: "password", value: formData.passwd},
-        {name:"conPasswd", placeholder: "Confirm Password", type: "password", value: formData.conPasswd}
+        {name:"username", placeholder: "User123", desc:"Username", type: "text", value: formData.username},
+        {name:"email", placeholder: "example@email.com", desc:"E-mail", type: "email", value: formData.email},
+        {name:"passwd", placeholder: "••••••••", desc:"Password", type: "password", value: formData.passwd},
+        {name:"conPasswd", placeholder: "••••••••", desc:"Confirm Password", type: "password", value: formData.conPasswd}
     ]
 
     return ( 
@@ -88,7 +89,8 @@ const FormSignUp = () => {
             <form method="post" onSubmit={handleSubmit} className="sad-flex sad-flex-col">
                 {inputs.map((input, id) => {
                     return (
-                        <label htmlFor={input.name} key={id}>
+                        <label htmlFor={input.name} key={id} className="sad-mb-8">
+                            {input.desc}
                             <input type={input.type} value={input.value} placeholder={input.placeholder} name={input.name} onChange={handleDataChange} className={labelClass} required/>
                         </label>
                     )

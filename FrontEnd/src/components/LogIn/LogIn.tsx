@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const LogIn = () => {
     return ( 
-        <div className="sad-mx-auto sad-bg-opacity-40 sad-backdrop-blur-sm sad-bg-slate-600 sad-w-fit sad-p-10 sad-rounded-xl sad-mt-40">
+        <div className="sad-mx-auto sad-bg-opacity-40 sad-backdrop-blur-sm sad-bg-slate-600 sad-w-fit sad-p-10 sad-rounded-xl sad-mt-40  sad-shadow-2xl sad-shadow-black">
             <h1 className="sad-text-3xl sad-mb-6 sad-font-bold">Log In</h1>
             <FormLogIn />
             <p className="sad-mt-6">

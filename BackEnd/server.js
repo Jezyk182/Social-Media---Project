@@ -5,17 +5,35 @@ import pg from "pg"
 import env from "dotenv"
 import bcrypt from "bcrypt";
 import passport from "passport";
+import cookieParser from "cookie-parser";
+import session from "express-session";
+import { Strategy } from "passport-local";
 
 const app = express()
 const port = 3000
 const saltRounds = 10;
 
+env.config();
 
-app.use(cors());
+app.use(cors({
+  origin: ["http://localhost:5173"],
+  methods: ["POST", "GET"],
+  credentials: true
+}));
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json());
+app.use(cookieParser())
+app.use(session({
+  secret: process.env.SECRET,
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    sameSite: 'none',
+    secure: false,
+    maxAge: 1000 * 60 * 60 * 1
+  }
+}))
 
-env.config();
 
 const db = new pg.Client({
     user: process.env.DB_USER,
@@ -26,6 +44,19 @@ const db = new pg.Client({
   });
   
 db.connect()
+
+
+app.get("/api", (req, res) => {
+  if(req.session.username) {
+    return res.json({success: true, username: req.session.username})
+  } else {
+    return res.json({success: false})
+  }
+})
+
+
+
+
 
 // Handle form submission
 app.post('/api/register', async (req, res) => {
@@ -62,6 +93,7 @@ app.post('/api/register', async (req, res) => {
       }
 });
 
+
 app.post("/api/login", async (req, res) => {
     const data = req.body;
     const {email, passwd} = data
@@ -79,7 +111,13 @@ app.post("/api/login", async (req, res) => {
               } else {
                 if (valid) {
                   //Passed password check
-                  return res.json({message: "Welcome back! Login successful", success: true})
+                  req.session.username = user.username
+                  console.log(req.session.username)
+                  return res.json({
+                    message: "Welcome back! Login successful", 
+                    success: true, 
+                    username: req.session.username
+                  })
                 } else {
                   //Did not pass password check
                   return res.json({message: "Incorrect password! Try Again", success: false})
@@ -94,8 +132,6 @@ app.post("/api/login", async (req, res) => {
         return res.json({message: "Server issue... try again later", success: false})
     }
 })
-
-
 
 app.listen(port, () => {
     console.log(`Server running on port ${port}.`)
