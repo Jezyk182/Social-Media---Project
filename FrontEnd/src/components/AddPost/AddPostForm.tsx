@@ -1,13 +1,17 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios"
+import { jwtDecode } from "jwt-decode";
+import useAuthStore from "../../stores/useAuthStore";
+
+
 
 const AddPostForm = () => {
     const [formData, setFormData] = useState({
         content: "",
     });
-    
     const navigate = useNavigate()
+    const logout = useAuthStore(state => state.logout)
 
     function handleDataChange(e : any) {
         const value = e.target.value
@@ -23,11 +27,30 @@ const AddPostForm = () => {
 
     async function handleSubmit(e : any) {
         e.preventDefault();
-        
+
+        const token = localStorage.getItem("accessToken")
+        if(!token) {
+            navigate("/login")
+            return
+        }
+
+        const decodedToken : any = jwtDecode(token)
+        const currentTime = Date.now() / 1000
+        console.log(decodedToken)
+        console.log(currentTime)
+        if (decodedToken.exp < currentTime) {
+            logout()
+            navigate("login")
+            return
+        }
+
+
         try {
+            console.log(formData)
             await axios.post('http://localhost:3000/api/addPost', formData, {
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem('accessToken')}`
                 }
             })
             .then(res => {
@@ -56,7 +79,7 @@ const AddPostForm = () => {
                             <p>Post Content</p>
                             <textarea value={formData.content} placeholder="One day, I..." name="content" onChange={handleDataChange} className={labelClass} rows={5} cols={50} required />
                         </label>
-                <button className="sad-my-1 sad-text-xl sad-py-1 sad-px-4 sad-rounded sad-text-gray-800 sad-w-fit sad-bg-blue-500 sad-font-bold">Log In</button>
+                <button className="sad-my-1 sad-text-xl sad-py-1 sad-px-4 sad-rounded sad-text-gray-800 sad-w-fit sad-bg-blue-500 sad-font-bold">Add Post</button>
             </form>
         </div>
      );

@@ -1,4 +1,4 @@
-import Navbar from "./components/Navbar"
+import Navbar from "./components/Navbar/Navbar"
 import Home from "./components/Home"
 import Contact from "./components/Contact"
 import { Routes, Route } from "react-router-dom"
@@ -6,6 +6,7 @@ import SignUp from "./components/SignUp/SignUp"
 import LogIn from "./components/LogIn/LogIn"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import AddPost from "./components/AddPost/AddPost"
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
 
 const queryClient = new QueryClient()
@@ -15,6 +16,7 @@ function App() {
   return (
     <>
       <QueryClientProvider client={queryClient}>
+        <ReactQueryDevtools />
         <Navbar />
         <Routes>
             <Route path="/" element={<Home />}/>

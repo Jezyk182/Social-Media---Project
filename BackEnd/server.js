@@ -6,6 +6,8 @@ import env from "dotenv"
 import bcrypt from "bcrypt";
 import cookieParser from "cookie-parser";
 import session from "express-session";
+import jwt from 'jsonwebtoken';
+
 
 const app = express()
 const port = 3000
@@ -18,6 +20,7 @@ app.use(cors({
   methods: ["POST", "GET"],
   credentials: true
 }));
+
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json());
 app.use(cookieParser())
@@ -28,9 +31,39 @@ app.use(session({
   cookie: {
     sameSite: 'none',
     secure: false,
+    httpOnly: true,
     maxAge: 1000 * 60 * 60 * 1
   }
 }))
+
+
+const verifyToken = (req, res, next) => {
+  const authHeader = req.headers['authorization'];
+  if (!authHeader) {
+    console.log('No token provided.');
+    return res.status(403).json({ message: 'No token provided.' });
+  }
+
+  const token = authHeader.split(' ')[1]; // Ensure it splits 'Bearer <token>'
+  if (!token) {
+    console.log('Token not in the correct format.');
+    return res.status(403).json({ message: 'No token provided.' });
+  }
+
+  jwt.verify(token, process.env.SECRET, (err, decoded) => {
+    if (err) {
+      console.error('Token verification failed:', err.message);
+      return res.status(401).json({ message: 'Failed to authenticate token.' });
+    }
+
+    req.userID = decoded.id;
+    req.username = decoded.username;
+    console.log('Token verified successfully:', decoded);
+
+    next();
+  });
+};
+
 
 
 const db = new pg.Client({
@@ -47,51 +80,76 @@ db.connect()
 app.get("/api", async (req, res) => {
   console.log("API request")
 
-
-
   try {
     const request = await db.query("SELECT content, username, email, likes FROM posts INNER JOIN users ON users.userid = posts.author_id");
 
     if (request.rows.length > 0) {
+        console.log("returned data: ", request.rows)
         return res.json({posts: request.rows})
     }  else {
-      return res.json({success: false})
+        console.log("No Data: ", request.rows)
+        return res.json({posts: request.rows})
     }
   } catch (err) {
     console.log(err);
   }
 })
 
-app.post("/api/addPost", async (req, res) => {
-  if(req.session.username) {
-    const data = req.body
-    const content = data.content
 
-    try {
-      const user = await db.query("SELECT userid FROM users WHERE username = $1", [req.session.username])
-      const userid = user.rows[0].userid
-      console.log(userid)
-      const d = new Date()
-      const day = d.getDay()
-      const month = d.getMonth()
-      const year = d.getFullYear()
+app.post("/api/addPost", verifyToken, async (req, res) => {
 
-      const date = `${day}-${month}-${year}`
-      console.log(date)
+  const { content } = req.body
+  const { userID } = req
 
-      const result = await db.query(
-        "INSERT INTO posts (content, author_id, date, likes, comments_count) VALUES ($1, $2, $3, $4, $5) RETURNING *",
-        [content, userid, date, 0, 0]
-      );
+  try {
+    const d = new Date()
+    const day = d.getDay()
+    const month = d.getMonth()
+    const year = d.getFullYear()
 
-      return res.json({message: "Success!", success: true})
-    } catch (err) {
-      console.log(err);
-    }
-      return res.json({success: true, username: req.session.username})
-  } else {
-    return res.json({success: false})
-   }
+    const date = `${day}-${month}-${year}`
+
+    const result = await db.query(
+      "INSERT INTO posts (content, author_id, date, likes) VALUES ($1, $2, $3, $4) RETURNING *",
+      [content, userID, date, 0]
+    );
+
+    res.json({ message: "Success!", success: true })
+  } catch (err) {
+    console.log(err)
+    return res.status(500).json({ message: "Server issues... Try again later ", success: false })
+  }
+
+
+  // if(req.session.username) {
+  //   const data = req.body
+  //   const content = data.content
+
+  //   try {
+  //     const user = await db.query("SELECT userid FROM users WHERE username = $1", [req.session.username])
+  //     const userid = user.rows[0].userid
+  //     console.log(userid)
+  //     const d = new Date()
+  //     const day = d.getDay()
+  //     const month = d.getMonth()
+  //     const year = d.getFullYear()
+
+  //     const date = `${day}-${month}-${year}`
+  //     console.log(date)
+
+  //     const result = await db.query(
+  //       "INSERT INTO posts (content, author_id, date, likes) VALUES ($1, $2, $3, $4) RETURNING *",
+  //       [content, userid, date, 0]
+  //     );
+
+  //     return res.json({message: "Success!", success: true})
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  //     return res.json({success: true, username: req.session.username})
+  // } else {
+  //   return res.json({success: false})
+  //  }
   
 })
 
@@ -149,12 +207,14 @@ app.post("/api/login", async (req, res) => {
               } else {
                 if (valid) {
                   //Passed password check
-                  req.session.username = user.username
-                  console.log(req.session.username)
+                  const accessToken = jwt.sign({ username: user.username, id: user.userid }, process.env.SECRET, { expiresIn: "1h" })
+                  // console.log(req.session.username)
                   return res.json({
                     message: "Welcome back! Login successful", 
                     success: true, 
-                    username: req.session.username
+                    accessToken,
+                    username: user.username,
+                    email: user.email
                   })
                 } else {
                   //Did not pass password check
