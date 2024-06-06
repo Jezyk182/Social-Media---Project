@@ -19,8 +19,6 @@ const Home = () => {
     if (isError) return <div>Error: {error.message}</div>;
     return ( 
         <div className="sad-container sad-m-auto sad-flex sad-flex-col sad-backdrop-blur-sm sad-bg-opacity-40 sad-rounded-lg sad-px-64 sad-py-10">
-            { isUserInfoAvailable && <h1>Welcome back {userInfo.username}</h1> }
-
             <h1 className="sad-text-white">Total of {data.posts.length} posts</h1>
             {data.posts?.map((post : any, index : number) => {
                 return (

@@ -207,7 +207,7 @@ app.post("/api/login", async (req, res) => {
               } else {
                 if (valid) {
                   //Passed password check
-                  const accessToken = jwt.sign({ username: user.username, id: user.userid }, process.env.SECRET, { expiresIn: "1h" })
+                  const accessToken = jwt.sign({ username: user.username, id: user.userid }, process.env.SECRET, { expiresIn: "5" })
                   // console.log(req.session.username)
                   return res.json({
                     message: "Welcome back! Login successful", 

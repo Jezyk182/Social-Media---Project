@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Description, Field, Label, Textarea } from '@headlessui/react'
+import clsx from 'clsx'
 import axios from "axios"
 import { jwtDecode } from "jwt-decode";
 import useAuthStore from "../../stores/useAuthStore";
@@ -40,7 +42,7 @@ const AddPostForm = () => {
         console.log(currentTime)
         if (decodedToken.exp < currentTime) {
             logout()
-            navigate("login")
+            navigate("/login")
             return
         }
 
@@ -70,16 +72,22 @@ const AddPostForm = () => {
     }
 
 
-    const labelClass = "sad-my-1 sad-text-xl sad-py-1 sad-px-3 sad-rounded sad-text-gray-200 sad-w-full sad-bg-transparent sad-border-gray-500 sad-border sad-shadow-sm sad-shadow-gray-800"
-
     return ( 
-        <div className="sad-mx-auto sad-w-full">
+        <div className="sad-mx-auto sad-min-w-96">
             <form method="post" onSubmit={handleSubmit} className="sad-flex sad-flex-col">
-                        <label htmlFor="content" className="sad-mb-8">
-                            <p>Post Content</p>
-                            <textarea value={formData.content} placeholder="One day, I..." name="content" onChange={handleDataChange} className={labelClass} rows={5} cols={50} required />
-                        </label>
-                <button className="sad-my-1 sad-text-xl sad-py-1 sad-px-4 sad-rounded sad-text-gray-800 sad-w-fit sad-bg-blue-500 sad-font-bold">Add Post</button>
+                <Field>
+                    <Label className="sad-text-lg sad-font-medium sad-text-white">Post Content</Label>
+                    <Description className="sad-text-lg sad-text-white/50">Share with us any of yours experience</Description>
+                    <Textarea
+                    className={clsx(
+                        'sad-mt-3 sad-block sad-w-full sad-resize-none sad-rounded-lg sad-border-none sad-bg-white/5 sad-py-1.5 sad-px-3 sad-text-lg sad-text-white',
+                        'focus:sad-outline-none data-[focus]:sad-outline-2 data-[focus]:sad-outline-offset-2 data-[focus]:sad-outline-white/25'
+                    )}
+                    rows={5}
+                    cols={50}
+                    />
+                </Field>
+                <button className="sad-mt-5 sad-my-1 sad-text-xl sad-py-1 sad-px-4 sad-rounded sad-text-gray-800 sad-w-fit sad-bg-blue-500 sad-font-bold">Add Post</button>
             </form>
         </div>
      );

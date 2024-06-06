@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { Field, Input, Label } from '@headlessui/react'
+import clsx from 'clsx'
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import useAuthStore from "../../stores/useAuthStore";
@@ -66,7 +68,6 @@ const FormLogIn = () => {
         }
     }
 
-    const labelClass = "sad-my-1 sad-text-xl sad-py-1 sad-px-3 sad-rounded sad-text-gray-200 sad-w-full sad-bg-transparent sad-border-gray-500 sad-border sad-shadow-sm sad-shadow-gray-800";
 
     const inputs = [
         { name: "email", placeholder: "example@email.com", desc: "E-mail", type: "email", value: formData.email },
@@ -74,21 +75,36 @@ const FormLogIn = () => {
     ];
 
     return (
-        <div className="sad-mx-auto sad-w-full">
+        <div className="sad-mx-auto sad-min-w-96">
             <form method="post" onSubmit={handleSubmit} className="sad-flex sad-flex-col">
                 {inputs.map((input, id) => (
-                    <label htmlFor={input.name} key={id} className="sad-mb-8">
-                        {input.desc}
-                        <input
-                            type={input.type}
-                            value={input.value}
-                            placeholder={input.placeholder}
-                            name={input.name}
-                            onChange={handleDataChange}
-                            className={labelClass}
-                            required
+                    <Field key={ id } className="sad-mb-4">
+                        <Label className="sad-text-lg sad-font-medium sad-text-white" >{ input.desc }</Label>
+                        <Input
+                        className={clsx(
+                            'sad-mt-1 sad-block sad-w-full sad-rounded-lg sad-border-none sad-bg-white/5 sad-py-2 sad-px-3 sad-text-lg sad-text-white',
+                            'focus:sad-outline-none data-[focus]:sad-outline-2 data-[focus]:sad-outline-offset-2 data-[focus]:sad-outline-white/25'
+                        )}
+                        type={input.type}
+                        value={input.value}
+                        placeholder={input.placeholder}
+                        name={input.name}
+                        onChange={handleDataChange}
+                        required
                         />
-                    </label>
+                    </Field>
+                    // <label htmlFor={input.name} key={id} className="sad-mb-8">
+                    //     {input.desc}
+                    //     <input
+                    //         type={input.type}
+                    //         value={input.value}
+                    //         placeholder={input.placeholder}
+                    //         name={input.name}
+                    //         onChange={handleDataChange}
+                    //         className={labelClass}
+                    //         required
+                    //     />
+                    // </label>
                 ))}
                 <button type="submit" className="sad-my-1 sad-text-xl sad-py-1 sad-px-4 sad-rounded sad-text-gray-800 sad-w-fit sad-bg-blue-500 sad-font-bold">Log In</button>
             </form>
