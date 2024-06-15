@@ -90,11 +90,11 @@ const FormSignUp = () => {
                 {inputs.map((input, id) => {
                     return (
                         <Field key={ id } className="sad-mb-4">
-                            <Label className="sad-text-lg sad-font-medium sad-text-white" >{ input.desc }</Label>
+                            <Label className="sad-text-lg sad-font-medium sad-text-black" >{ input.desc }</Label>
                             <Input
                             className={clsx(
-                                'sad-mt-1 sad-block sad-w-full sad-rounded-lg sad-border-none sad-bg-white/5 sad-py-2 sad-px-3 sad-text-lg sad-text-white',
-                                'focus:sad-outline-none data-[focus]:sad-outline-2 data-[focus]:sad-outline-offset-2 data-[focus]:sad-outline-white/25'
+                                'sad-mt-1 sad-block sad-rounded-full sad-border-2 sad-border-gray-400 sad-py-2 sad-px-3 sad-text-lg sad-text-black sad-bg-white sad-w-full',
+                                'focus:sad-outline-none data-[focus]:sad-outline-offset-2 data-[focus]:sad-border-black'
                             )}
                             type={input.type}
                             value={input.value}
