@@ -112,7 +112,7 @@ const FormSignUp = () => {
                         // </label>
                     )
                 })}
-                <button className="sad-my-1 sad-text-xl sad-py-1 sad-px-4 sad-rounded sad-text-gray-800 sad-w-fit sad-bg-blue-500 sad-font-bold" onClick={() => console.log("clicked!")}>Sign Up</button>
+                <button className="sad-my-6 sad-text-xl sad-py-3 sad-px-4 sad-rounded-full sad-text-white sad-w-full sad-bg-gray-800 sad-font-bold hover:sad-bg-black sad-duration-200">Sign Up</button>
             </form>
             <p className="sad-text-red-600 sad-cursor-default sad-select-none" onDoubleClick={() => setError("")}>{signUpError}</p>
         </div>

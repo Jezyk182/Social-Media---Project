@@ -1,4 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 import { fetchPosts } from "../api";
 import useUserInfo from "../stores/useUserInfo";
 
@@ -12,6 +14,14 @@ const Home = () => {
 
     const userInfo = useUserInfo((state) => state.userInfo)
     const isUserInfoAvailable = userInfo.username !== null && userInfo.email !== null;
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!isUserInfoAvailable) {
+            navigate("/signup");
+        }
+    }, [isUserInfoAvailable, navigate]);
 
     
 
