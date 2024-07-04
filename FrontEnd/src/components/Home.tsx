@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import { fetchPosts } from "../api";
+import { fetchPosts } from "../api/getPosts";
 import useUserInfo from "../stores/useUserInfo";
 
 

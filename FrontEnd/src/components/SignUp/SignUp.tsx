@@ -12,7 +12,7 @@ const SignUp = () => {
                     <p>Register for new crazy stories!</p>
                     <FormSignUp />
                     <p className="sad-mt-0">
-                        Already have an account? <Link to="/login" className="sad-text-black sad-underline hover:sad-text-sky-300 sad-duration-200 sad-ease-out">Log In!</Link>
+                        Already have an account? <Link to="/login" className="sad-text-black sad-underline hover:sad-text-slate-500 sad-duration-200 sad-ease-out">Log In!</Link>
                     </p>
                 </div>
             </div>
