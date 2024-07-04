@@ -32,13 +32,14 @@ app.use(session({
     sameSite: 'none',
     secure: false,
     httpOnly: true,
-    maxAge: 1000 * 60 * 60 * 5
+    maxAge: 1000 * 60 * 60 * 1
   }
 }))
 
 
 const verifyToken = (req, res, next) => {
   const authHeader = req.headers['authorization'];
+  console.log("REQUEST:" + req)
   if (!authHeader) {
     console.log('No token provided.');
     return res.status(403).json({ message: 'No token provided.' });
@@ -100,6 +101,8 @@ app.post("/api/addPost", verifyToken, async (req, res) => {
 
   const { content } = req.body
   const { userID } = req
+
+  console.log(content, userID)
 
   try {
     const d = new Date()
@@ -207,7 +210,7 @@ app.post("/api/login", async (req, res) => {
               } else {
                 if (valid) {
                   //Passed password check
-                  const accessToken = jwt.sign({ username: user.username, id: user.userid }, process.env.SECRET, { expiresIn: "5" })
+                  const accessToken = jwt.sign({ username: user.username, id: user.userid }, process.env.SECRET, { expiresIn: "1h" })
                   // console.log(req.session.username)
                   return res.json({
                     message: "Welcome back! Login successful", 

@@ -5,7 +5,7 @@ export function fetchPosts() {
     return axios
     .get("http://localhost:3000/api")
     .then(res => {
-        console.log("Posts response:", res.data);
+        // console.log("Posts response:", res.data);
         return res.data;
     })
     .catch(error => {

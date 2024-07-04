@@ -13,7 +13,7 @@ const LogIn = () => {
                     <p>Enter your email and password to log in and explore posts!</p>
                     <FormLogIn />
                     <p className="sad-mt-0">
-                        Don't have an account? <Link to="/signup" className="sad-text-black sad-underline hover:sad-text-sky-300 sad-duration-200 sad-ease-out">Register Now!</Link>
+                        Don't have an account? <Link to="/signup" className="sad-text-black sad-underline hover:sad-text-slate-500 sad-duration-200 sad-ease-out">Register Now!</Link>
                     </p>
                 </div>
             </div>
