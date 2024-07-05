@@ -28,11 +28,11 @@ const Home = () => {
     if (isLoading) return <div>Loading...</div>;
     if (isError) return <div>Error: {error.message}</div>;
     return ( 
-        <div className="sad-container sad-m-auto sad-flex sad-flex-col sad-backdrop-blur-sm sad-bg-opacity-40 sad-rounded-lg sad-px-64 sad-py-10">
-            <h1 className="sad-text-white">Total of {data.posts.length} posts</h1>
+        <div className="sad-container sad-m-auto sad-flex sad-flex-col sad-rounded-lg sad-px-64 sad-py-10 sad-bg-bg">
+            <h1 className="sad-text-text">Total of {data.posts.length} posts</h1>
             {data.posts?.map((post : any, index : number) => {
                 return (
-                    <div className="sad-border" key={index}>
+                    <div className="sad-mb-10 sad-rounded-3xl sad-py-5 sad-px-8 sad-bg-slate-400/5 sad-backdrop-blur-sm sad-shadow-lg " key={index}>
                         <p>{post.username}</p>
                         <p>{post.email}</p>
                         <p>{post.content}</p>

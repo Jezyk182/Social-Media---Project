@@ -8,9 +8,15 @@ export default {
   theme: {
     extend: {
       backgroundImage: {
-        'login-bg': "url('/public/login.jpg')",
+        // BG IMAGE
       }
     },
+    colors: {
+      bg: "#222831",
+      bgAcc: "#31363F",
+      textAcc: "#76ABAE",
+      text: "#EEEEEE"
+    }
   },
   plugins: [],
 }
