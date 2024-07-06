@@ -9,14 +9,15 @@ export default {
     extend: {
       backgroundImage: {
         // BG IMAGE
+      },
+      colors: {
+        bg: "#222831",
+        bgAcc: "#31363F",
+        textAcc: "#76ABAE",
+        text: "#EEEEEE"
       }
-    },
-    colors: {
-      bg: "#222831",
-      bgAcc: "#31363F",
-      textAcc: "#76ABAE",
-      text: "#EEEEEE"
     }
+    
   },
   plugins: [],
 }

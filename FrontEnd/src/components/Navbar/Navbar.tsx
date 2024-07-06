@@ -17,14 +17,15 @@ const Navbar = () => {
 
 
     return (
-        <nav className="sad-container sad-m-auto sad-flex sad-justify-between sad-items-center sad-text-2xl sad-py-2 sad-border-b sad-border-text">
+        <nav className="sad-container sad-m-auto sad-flex sad-justify-between sad-items-center sad-text-2xl sad-py-2 sad-border-b-2 sad-border-text  sad-sticky sad-top-0 sad-z-50 sad-bg-bg
+        ">
             <div>
                 {links.map((link, id) => {
                     return (
                         <Link 
                             to={link.path} 
                             key={id}
-                            className="sad-mx-5 sad-text-slate-400 sad-duration-200 sad-ease-out hover:sad-text-textAcc">
+                            className="sad-mx-5 sad-text-text sad-duration-200 sad-ease-out hover:sad-text-textAcc">
                                 {link.name}
                         </Link>
                     )
