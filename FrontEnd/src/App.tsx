@@ -7,10 +7,15 @@ import LogIn from "./components/LogIn/LogIn";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import AddPost from "./components/AddPost/AddPost";
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import axiosConfig from "./axiosConfig";
 
 const queryClient = new QueryClient();
 
-function App() {
+const App = () => {
+
+  axiosConfig()
+
+
   const location = useLocation();
   const hideNavbarPaths = ['/login', '/signup'];
 
