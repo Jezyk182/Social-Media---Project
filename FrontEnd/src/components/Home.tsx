@@ -32,7 +32,7 @@ const Home = () => {
             <h1 className="sad-text-text">Total of {data.posts.length} posts</h1>
             {data.posts?.map((post : any, index : number) => {
                 return (
-                    <div className="sad-mb-10 sad-rounded-3xl sad-py-5 sad-px-8 sad-bg-slate-400/5 sad-backdrop-blur-sm sad-shadow-lg sad-bg-bgAcc sad-shadow-bgAcc" key={index}>
+                    <div className="sad-mb-10 sad-py-5 sad-px-8 sad-border-b-2 sad-border-bgAcc" key={index}>
                         <p>{post.username}</p>
                         <p>{post.email}</p>
                         <p>{post.content}</p>
