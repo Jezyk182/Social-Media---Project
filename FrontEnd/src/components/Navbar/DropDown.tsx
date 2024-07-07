@@ -1,15 +1,11 @@
 import { Menu, MenuButton, MenuItem, MenuItems, Transition, MenuSeparator } from '@headlessui/react'
 import useUserInfo from '../../stores/useUserInfo'
 import LogOut from './LogOut'
+import clsx from "clsx"
 
 const DropDown = () => {
 
     const userInfo = useUserInfo((state) => state.userInfo)
-
-
-    function classNames(...classes : any) {
-        return classes.filter(Boolean).join(' ')
-    }
 
     return (
         <Menu as="div" className="sad-relative sad-inline-block sad-text-left">
@@ -40,7 +36,7 @@ const DropDown = () => {
                   {({ focus }) => (
                     <a
                       href="#"
-                      className={classNames(
+                      className={clsx(
                         focus ? 'sad-bg-slate-800 sad-text-gray-200' : 'sad-text-gray-100',
                         'sad-block sad-px-4 sad-py-2 sad-text-lg sad-duration-200 sad-ease-out hover:sad-text-textAcc'
                       )}
@@ -53,7 +49,7 @@ const DropDown = () => {
                     {({ focus }) => (
                     <a
                         href="#"
-                        className={classNames(
+                        className={clsx(
                         focus ? 'sad-bg-slate-800 sad-text-gray-200' : 'sad-text-gray-100',
                         'sad-block sad-px-4 sad-py-2 sad-text-lg sad-duration-200 sad-ease-out hover:sad-text-textAcc'
                         )}
