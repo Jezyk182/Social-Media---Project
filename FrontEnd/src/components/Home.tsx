@@ -1,8 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { fetchPosts } from "../api/getPosts";
 import useUserInfo from "../stores/useUserInfo";
+import { Heart } from "../icons/hearth"   
 
 
 const Home = () => {
@@ -23,7 +24,9 @@ const Home = () => {
         }
     }, [isUserInfoAvailable, navigate]);
 
-    
+    const addLike = () => {
+        return null
+    }
 
     if (isLoading) return <div>Loading...</div>;
     if (isError) return <div>Error: {error.message}</div>;
@@ -36,7 +39,10 @@ const Home = () => {
                         <p>{post.username}</p>
                         <p>{post.email}</p>
                         <p>{post.content}</p>
-                        <p>{post.likes}</p>
+                        <div className="sad-flex sad-items-center sad-gap-2">
+                            <Heart stroke="#a0a0a0" className="hover:sad-stroke-text sad-cursor-pointer sad-ease-in-out sad-duration-200" onClick={ addLike }/> 
+                            <p className="">{post.likes}  </p>
+                        </div>
                     </div>
                 )
             })}
