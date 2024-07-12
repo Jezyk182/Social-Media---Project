@@ -7,8 +7,9 @@ import bcrypt from "bcrypt";
 import cookieParser from "cookie-parser";
 import session from "express-session";
 import jwt from 'jsonwebtoken';
+import pool from "./db"
 
-
+const router = express.Router()
 const app = express()
 const port = 3000
 const saltRounds = 10;
