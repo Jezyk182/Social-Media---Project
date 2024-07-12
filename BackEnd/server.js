@@ -1,15 +1,13 @@
 import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors"
-import pg from "pg"
 import env from "dotenv"
 import bcrypt from "bcrypt";
 import cookieParser from "cookie-parser";
 import session from "express-session";
 import jwt from 'jsonwebtoken';
-import pool from "./db"
+import pool from "./db.js"
 
-const router = express.Router()
 const app = express()
 const port = 3000
 const saltRounds = 10;
@@ -68,22 +66,11 @@ const verifyToken = (req, res, next) => {
 
 
 
-const db = new pg.Client({
-    user: process.env.DB_USER,
-    host: process.env.DB_HOST,
-    database: process.env.DB_DATABASE,
-    password: process.env.DB_PASSWORD,
-    port: process.env.DB_PORT,
-  });
-  
-db.connect()
-
-
 app.get("/api", async (req, res) => {
   console.log("API request")
 
   try {
-    const request = await db.query("SELECT content, username, email FROM posts INNER JOIN users ON users.userid = posts.author_id");
+    const request = await pool.query("SELECT content, username, email FROM posts INNER JOIN users ON users.userid = posts.author_id");
 
     if (request.rows.length > 0) {
         console.log("returned data: ", request.rows)
@@ -113,7 +100,7 @@ app.post("/api/addPost", verifyToken, async (req, res) => {
 
     const date = `${day}-${month}-${year}`
 
-    const result = await db.query(
+    const result = await pool.query(
       "INSERT INTO posts (content, author_id, date, likes) VALUES ($1, $2, $3, $4) RETURNING *",
       [content, userID, date, 0]
     );
@@ -130,7 +117,7 @@ app.post("/api/addPost", verifyToken, async (req, res) => {
   //   const content = data.content
 
   //   try {
-  //     const user = await db.query("SELECT userid FROM users WHERE username = $1", [req.session.username])
+  //     const user = await pool.query("SELECT userid FROM users WHERE username = $1", [req.session.username])
   //     const userid = user.rows[0].userid
   //     console.log(userid)
   //     const d = new Date()
@@ -141,7 +128,7 @@ app.post("/api/addPost", verifyToken, async (req, res) => {
   //     const date = `${day}-${month}-${year}`
   //     console.log(date)
 
-  //     const result = await db.query(
+  //     const result = await pool.query(
   //       "INSERT INTO posts (content, author_id, date, likes) VALUES ($1, $2, $3, $4) RETURNING *",
   //       [content, userid, date, 0]
   //     );
@@ -165,9 +152,9 @@ app.post('/api/register', async (req, res) => {
     const {username, email, passwd} = data
 
     try {
-        const checkEmail = await db.query("SELECT * FROM users WHERE email = $1", [email]);
+        const checkEmail = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
 
-        const checkUsername = await db.query("SELECT * FROM users WHERE username = $1", [username]);
+        const checkUsername = await pool.query("SELECT * FROM users WHERE username = $1", [username]);
 
         if (checkUsername.rows.length > 0) {
             return res.json({message: "Username already taken. Try another one!", success: false})
@@ -180,7 +167,7 @@ app.post('/api/register', async (req, res) => {
               console.error("Error hashing password:", err);
             } else {
               console.log("Hashed Password:", hash);
-              const result = await db.query(
+              const result = await pool.query(
                 "INSERT INTO users (username, email, password) VALUES ($1, $2, $3) RETURNING *",
                 [username, email, hash]
               );
@@ -199,7 +186,7 @@ app.post("/api/login", async (req, res) => {
     const {email, passwd} = data
 
     try {
-        const result = await db.query("SELECT * FROM users WHERE email = $1", [email])
+        const result = await pool.query("SELECT * FROM users WHERE email = $1", [email])
         if (result.rows.length > 0) {
             const user = result.rows[0];
             const storedHashedPassword = user.password;

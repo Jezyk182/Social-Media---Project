@@ -1,15 +1,16 @@
 import pg from 'pg'
 import env from "dotenv"
 
-const { Pool } = pg
 env.config();
 
+const { Pool } = pg
+
 const pool = new Pool({
-    user: env.DB_USER,
-    host: env.DB_HOST,
-    database: env.DB_DATABASE,
-    password: env.DB_PASSWORD,
-    port: env.DB_PORT,
+    user: process.env.DB_USER,
+    host: process.env.DB_HOST,
+    database: process.env.DB_DATABASE,
+    password: process.env.DB_PASSWORD,
+    port: process.env.DB_PORT,
     max: 20,
     idleTimeoutMillis: 30000,
     connectionTimeoutMillis: 2000
@@ -24,5 +25,4 @@ pool.on('error', (err) => {
     process.exit(-1);
 });
 
-
-module.exports = pool;
+export default pool; // Exporting the pool as default
