@@ -3,7 +3,7 @@ import axios from "axios";
 export function fetchPosts() {
     console.log("Fetching posts...");
     return axios
-    .get("http://localhost:3000/api")
+    .get("/api/posts")
     .then(res => {
         // console.log("Posts response:", res.data);
         return res.data;

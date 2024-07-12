@@ -66,7 +66,7 @@ const verifyToken = (req, res, next) => {
 
 
 
-app.get("/api", async (req, res) => {
+app.get("/api/posts", async (req, res) => {
   console.log("API request")
 
   try {
