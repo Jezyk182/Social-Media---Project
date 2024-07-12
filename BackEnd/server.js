@@ -82,7 +82,7 @@ app.get("/api", async (req, res) => {
   console.log("API request")
 
   try {
-    const request = await db.query("SELECT content, username, email, likes FROM posts INNER JOIN users ON users.userid = posts.author_id");
+    const request = await db.query("SELECT content, username, email FROM posts INNER JOIN users ON users.userid = posts.author_id");
 
     if (request.rows.length > 0) {
         console.log("returned data: ", request.rows)

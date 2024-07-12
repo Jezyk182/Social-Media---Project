@@ -41,7 +41,7 @@ const Home = () => {
                         <p>{post.content}</p>
                         <div className="sad-flex sad-items-center sad-gap-2">
                             <Heart stroke="#a0a0a0" className="hover:sad-stroke-text sad-cursor-pointer sad-ease-in-out sad-duration-200" onClick={ addLike }/> 
-                            <p className="">{post.likes}  </p>
+                            <p className=""> 0 </p>
                         </div>
                     </div>
                 )
