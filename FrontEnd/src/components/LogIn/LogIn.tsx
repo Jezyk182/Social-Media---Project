@@ -5,7 +5,7 @@ import "../../../tailwind.config.js"
 
 const LogIn = () => {
     return ( 
-        <div className="sad-bg-[url('/public/login.jpg')] sad-h-screen sad-w-1/2">
+        <div className="sad-bg-[url('/login.jpg')] sad-h-screen sad-w-1/2">
             <div className="sad-absolute sad-right-0 sad-h-full sad-w-1/2 sad-p-10 sad-pt-4 sad-bg-white sad-text-bg">
                 <div className="sad-w-3/4 sad-mx-auto">
                     <Logo w={128} h={128}/>

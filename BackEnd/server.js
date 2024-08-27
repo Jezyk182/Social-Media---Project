@@ -70,7 +70,7 @@ app.get("/api/posts", async (req, res) => {
   console.log("API request")
 
   try {
-    const request = await pool.query("SELECT content, username, email FROM posts INNER JOIN users ON users.userid = posts.author_id");
+    const request = await pool.query("SELECT postId, content, username, email FROM posts INNER JOIN users ON users.userid = posts.author_id ORDER BY postid DESC");
 
     if (request.rows.length > 0) {
         console.log("returned data: ", request.rows)
@@ -101,8 +101,8 @@ app.post("/api/addPost", verifyToken, async (req, res) => {
     const date = `${day}-${month}-${year}`
 
     const result = await pool.query(
-      "INSERT INTO posts (content, author_id, date, likes) VALUES ($1, $2, $3, $4) RETURNING *",
-      [content, userID, date, 0]
+      "INSERT INTO posts (content, author_id, date) VALUES ($1, $2, $3) RETURNING *",
+      [content, userID, date]
     );
 
     res.json({ message: "Success!", success: true })
@@ -221,6 +221,25 @@ app.post("/api/login", async (req, res) => {
         return res.json({message: "Server issue... try again later", success: false})
     }
 })
+
+app.get("/api/:postId/like", (req, res) => {
+  const userID = req.user.id
+  const { postID } = req.body
+  console.log(userID)
+})
+
+
+app.patch("/api/posts/edit/:id", verifyToken, (req, res) => {
+  const userId = req.user.id
+  const { postId } = req.body
+
+})
+
+app.delete("/api/delete", verifyToken, (req, res) => {
+  
+})
+
+
 
 app.listen(port, () => {
     console.log(`Server running on port ${port}.`)

@@ -3,7 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { fetchPosts } from "../api/getPosts";
 import useUserInfo from "../stores/useUserInfo";
-import { Heart } from "../icons/hearth"   
+import Heart from "../icons/hearth"
+import EditPost from "./editPost";
+import DeletePost from "./DeletePosts/DeletePost";
 
 
 const Home = () => {
@@ -20,12 +22,12 @@ const Home = () => {
 
     useEffect(() => {
         if (!isUserInfoAvailable) {
-            navigate("/signup");
+            navigate("/login");
         }
     }, [isUserInfoAvailable, navigate]);
 
     const addLike = () => {
-        return null
+        console.log("liked")
     }
 
     if (isLoading) return <div>Loading...</div>;
@@ -39,9 +41,20 @@ const Home = () => {
                         <p>{post.username}</p>
                         <p>{post.email}</p>
                         <p>{post.content}</p>
-                        <div className="sad-flex sad-items-center sad-gap-2">
-                            <Heart stroke="#a0a0a0" className="hover:sad-stroke-text sad-cursor-pointer sad-ease-in-out sad-duration-200" onClick={ addLike }/> 
-                            <p className=""> 0 </p>
+                        <div className="sad-flex sad-items-center sad-justify-between">
+                            <div className="sad-flex sad-items-center sad-gap-2">
+                                <Heart stroke="#a0a0a0" className="hover:sad-stroke-text sad-cursor-pointer sad-ease-in-out sad-duration-200" onClick={ () => addLike() }/> 
+                                <p className=""> 0 </p>
+                            </div>
+                            <div className="sad-flex sad-items-center sad-gap-2">
+                                { userInfo.email === post.email && userInfo.username === post.username 
+                                ?<>
+                                    <EditPost postEmail={ post.email } postUsername={ post.username } /> 
+                                    <DeletePost />
+                                 </>
+                                : null }
+                                
+                            </div>
                         </div>
                     </div>
                 )

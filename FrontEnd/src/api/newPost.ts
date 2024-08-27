@@ -7,11 +7,7 @@ interface PostInputs {
 
 export const newPost = async (data: PostInputs) => {
             return await axios
-            .post('/api/addPost', data, {
-                headers: {
-                    "Authorization": `Bearer ${localStorage.getItem('accessToken')}`
-                }
-            })
+            .post('/api/addPost', data)
             .then(res => {
                 return res.data
             })
