@@ -6,6 +6,7 @@ interface params {
     postEmail: string;
     postUsername: string;
 }
+
 const EditPost: React.FC<params> = ({ postEmail, postUsername }) => {
     const { email, username } = useUserInfo((state) => state.userInfo) 
 

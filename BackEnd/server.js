@@ -16,7 +16,7 @@ env.config();
 
 app.use(cors({
   origin: ["http://localhost:5173"],
-  methods: ["POST", "GET"],
+  methods: ["POST", "GET", "DELETE"],
   credentials: true
 }));
 
@@ -66,11 +66,11 @@ const verifyToken = (req, res, next) => {
 
 
 
-app.get("/api/posts", async (req, res) => {
+app.get("/api/posts", verifyToken, async (req, res) => {
   console.log("API request")
 
   try {
-    const request = await pool.query("SELECT postId, content, username, email FROM posts INNER JOIN users ON users.userid = posts.author_id ORDER BY postid DESC");
+    const request = await pool.query("SELECT postid, content, username, email FROM posts INNER JOIN users ON users.userid = posts.author_id ORDER BY postid DESC");
 
     if (request.rows.length > 0) {
         console.log("returned data: ", request.rows)
@@ -235,11 +235,35 @@ app.patch("/api/posts/edit/:id", verifyToken, (req, res) => {
 
 })
 
-app.delete("/api/delete", verifyToken, (req, res) => {
-  
-})
 
+app.delete("/api/posts/delete/:id", verifyToken, async (req, res) => {
+  const id = req.params.id;
+  const { email, username } = req.body;
+  console.log("DELETING POST " + id)
+  console.log(email, username)
 
+  try {
+    const result = await pool.query(
+      `DELETE FROM posts 
+       WHERE postid = $1 AND author_id = (
+         SELECT userid FROM users WHERE username = $2 AND email = $3
+       )`, 
+      [id, username, email]
+    );
+    
+
+    // if (result.rows.length === 0) {
+    //   return res.status(404).json({ message: "Post not found or you're not authorized to delete this post." });
+    // }
+
+    res.status(200).json({ message: "Post deleted successfully." });
+    console.log("POST DELETED HIHIHI")
+  } catch (err) {
+    console.error("Can't delete post: " + err);
+    res.status(500).json({ message: "An error occurred while deleting the post." });
+  }
+  console.log("HUH")
+});
 
 app.listen(port, () => {
     console.log(`Server running on port ${port}.`)

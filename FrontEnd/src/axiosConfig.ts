@@ -13,11 +13,10 @@ const axiosConfig = () => {
             if (token) {
                 request.headers['Authorization'] = `Bearer ${token}`;
             }
-            console.log(request);
             return request;
         },
         error => {
-            console.log(error);
+            console.log('Request Error:', error);
             return Promise.reject(error);
         }
     );
@@ -33,11 +32,13 @@ const axiosConfig = () => {
                     try {
                         const response = await axios.post(`/refreshToken`, { refreshToken });
                         const newAccessToken = response.data.accessToken;
+
                         localStorage.setItem("accessToken", newAccessToken);
                         originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+                        
                         return axios(originalRequest);
                     } catch (refreshError) {
-                        console.log(refreshError);
+                        console.log('Token Refresh Error:', refreshError);
                         handleLogout();
                         return Promise.reject(refreshError);
                     }

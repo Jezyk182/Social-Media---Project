@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { fetchPosts } from "../api/getPosts";
 import useUserInfo from "../stores/useUserInfo";
 import Heart from "../icons/hearth"
@@ -50,7 +50,7 @@ const Home = () => {
                                 { userInfo.email === post.email && userInfo.username === post.username 
                                 ?<>
                                     <EditPost postEmail={ post.email } postUsername={ post.username } /> 
-                                    <DeletePost />
+                                    <DeletePost postId={ post.postid }/>
                                  </>
                                 : null }
                                 

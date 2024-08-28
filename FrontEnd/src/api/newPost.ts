@@ -12,7 +12,7 @@ export const newPost = async (data: PostInputs) => {
                 return res.data
             })
             .catch(err => {
-                console.error("Error creating account: ", err);
+                console.error("Error creating post: ", err);
                 throw err
             });
         }
