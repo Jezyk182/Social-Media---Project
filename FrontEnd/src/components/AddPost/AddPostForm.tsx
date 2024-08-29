@@ -1,9 +1,8 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import clsx from 'clsx'
 import { jwtDecode } from "jwt-decode";
 import useAuthStore from "../../stores/useAuthStore";
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useMutation } from '@tanstack/react-query';
@@ -31,7 +30,7 @@ const AddPostForm = () => {
         resolver: zodResolver(schema)
     })
 
-    const { data, error, isError, isSuccess, mutate } = useMutation({
+    const { error, isError, mutate } = useMutation({
         mutationFn: (data : Inputs) => newPost(data),
         onSuccess: (data : any) => {
             if(data.success) {

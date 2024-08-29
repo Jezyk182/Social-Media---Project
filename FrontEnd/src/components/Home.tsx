@@ -3,9 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { fetchPosts } from "../api/getPosts";
 import useUserInfo from "../stores/useUserInfo";
-import Heart from "../icons/hearth"
-import EditPost from "./editPost";
-import DeletePost from "./DeletePosts/DeletePost";
 import Post from "./Post/Post";
 
 
@@ -26,10 +23,6 @@ const Home = () => {
             navigate("/login");
         }
     }, [isUserInfoAvailable, navigate]);
-
-    const addLike = () => {
-        console.log("liked")
-    }
 
     if (isLoading) return <div>Loading...</div>;
     if (isError) return <div>Error: {error.message}</div>;
