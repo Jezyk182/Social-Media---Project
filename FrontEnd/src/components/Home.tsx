@@ -32,7 +32,7 @@ const Home = () => {
             {data.posts?.map((post : any, index : number) => {
                 console.log(post.date)
                 return (
-                    <Post username={ post.username } email={ post.email } content={ post.content } postid={ post.postid } key={index} date={post.date}/>
+                    <Post username={ post.username } email={ post.email } content={ post.content } postid={ post.postid } key={index} date={post.date} edited={post.edited}/>
                 )
             })}
         </div>

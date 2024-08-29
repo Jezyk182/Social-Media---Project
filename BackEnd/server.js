@@ -70,7 +70,7 @@ app.get("/api/posts", verifyToken, async (req, res) => {
   console.log("API request")
 
   try {
-    const request = await pool.query("SELECT postid, content, username, email, date FROM posts INNER JOIN users ON users.userid = posts.author_id ORDER BY postid DESC");
+    const request = await pool.query("SELECT postid, content, username, email, date, edited FROM posts INNER JOIN users ON users.userid = posts.author_id ORDER BY postid DESC");
 
     if (request.rows.length > 0) {
         console.log("returned data: ", request.rows)
@@ -94,14 +94,14 @@ app.post("/api/addPost", verifyToken, async (req, res) => {
 
   try {
     const d = new Date()
-    const day = d.getDay()
-    const month = d.getMonth()
+    const day = d.getDate()
+    const month = d.getMonth() + 1
     const year = d.getFullYear()
 
     const date = `${day}-${month}-${year}`
 
     const result = await pool.query(
-      "INSERT INTO posts (content, author_id, date) VALUES ($1, $2, $3) RETURNING *",
+      "INSERT INTO posts (content, author_id, date, edited) VALUES ($1, $2, $3, false) RETURNING *",
       [content, userID, date]
     );
 
@@ -234,13 +234,20 @@ app.patch("/api/posts/edit/:id", verifyToken, async (req, res) => {
   console.log(req.body.data)
 
   try {
+    const d = new Date()
+    const day = d.getDate()
+    const month = d.getMonth() + 1
+    const year = d.getFullYear()
+
+    const date = `${day}-${month}-${year}`
+
     const result = await pool.query(
       `UPDATE posts
-        SET content = $1
-        WHERE postid = $2 AND author_id = (
-        SELECT userid FROM users WHERE username = $3 AND email = $4
+        SET content = $1, date = $2, edited = true
+        WHERE postid = $3 AND author_id = (
+        SELECT userid FROM users WHERE username = $4 AND email = $5
        )`, 
-      [content, id, username, email]
+      [content, date, id, username, email]
     );
     
 
@@ -249,7 +256,6 @@ app.patch("/api/posts/edit/:id", verifyToken, async (req, res) => {
     // }
 
     res.status(200).json({ message: "Post edited successfully.", success: true });
-    console.log("POST EDITEEEED HIHIHI")
   } catch (err) {
     console.error("Can't edit post: " + err);
     res.status(500).json({ message: "An error occurred while editing the post." });

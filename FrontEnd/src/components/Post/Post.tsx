@@ -10,6 +10,7 @@ interface postData {
     content: string;
     postid: number;
     date: string;
+    edited: boolean;
 }
 
 const Post: React.FC<postData> = (props) => {
@@ -41,7 +42,7 @@ const Post: React.FC<postData> = (props) => {
                     
                 </div>
             </div>
-            <p className="sad-text-gray-500 sad-mt-2 -sad-mb-2">Published at: { postDate }</p>
+            <p className="sad-text-gray-500 sad-mt-2 -sad-mb-2">{ props.edited ? "Edited" : "Published" } at: { postDate }</p>
         </div>
     )
 }
