@@ -9,10 +9,13 @@ interface postData {
     email: string;
     content: string;
     postid: number;
+    date: string;
 }
 
 const Post: React.FC<postData> = (props) => {
     const userInfo = useUserInfo((state) => state.userInfo)
+    const utcDate = new Date(props.date);
+    const postDate = utcDate.toLocaleDateString();
 
     const addLike = () => {
         console.log("liked")
@@ -38,6 +41,7 @@ const Post: React.FC<postData> = (props) => {
                     
                 </div>
             </div>
+            <p className="sad-text-gray-500 sad-mt-2 -sad-mb-2">Published at: { postDate }</p>
         </div>
     )
 }

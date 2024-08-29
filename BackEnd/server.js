@@ -70,7 +70,7 @@ app.get("/api/posts", verifyToken, async (req, res) => {
   console.log("API request")
 
   try {
-    const request = await pool.query("SELECT postid, content, username, email FROM posts INNER JOIN users ON users.userid = posts.author_id ORDER BY postid DESC");
+    const request = await pool.query("SELECT postid, content, username, email, date FROM posts INNER JOIN users ON users.userid = posts.author_id ORDER BY postid DESC");
 
     if (request.rows.length > 0) {
         console.log("returned data: ", request.rows)

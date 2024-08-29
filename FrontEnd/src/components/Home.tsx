@@ -30,8 +30,9 @@ const Home = () => {
         <div className="sad-container sad-m-auto sad-flex sad-flex-col sad-rounded-lg sad-px-64 sad-py-10 sad-bg-bg">
             <h1 className="sad-text-text">Total of {data.posts.length} posts</h1>
             {data.posts?.map((post : any, index : number) => {
+                console.log(post.date)
                 return (
-                    <Post username={ post.username } email={ post.email } content={ post.content } postid={ post.postid } key={index} />
+                    <Post username={ post.username } email={ post.email } content={ post.content } postid={ post.postid } key={index} date={post.date}/>
                 )
             })}
         </div>
