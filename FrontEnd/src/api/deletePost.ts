@@ -1,6 +1,12 @@
 import axios from "axios";
 
-export const deletePost = async (id: number, email: string | null, username: string | null) => {
+interface props {
+    id: number;
+    email: string | null;
+    username: string | null;
+}
+
+export const deletePost = async ({id, email, username}: props) => {
     return await axios
     .delete(`/api/posts/delete/${id}`, {
         data: { email, username }

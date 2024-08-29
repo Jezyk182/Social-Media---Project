@@ -16,7 +16,7 @@ env.config();
 
 app.use(cors({
   origin: ["http://localhost:5173"],
-  methods: ["POST", "GET", "DELETE"],
+  methods: ["POST", "GET", "DELETE", "PATCH"],
   credentials: true
 }));
 
@@ -229,9 +229,33 @@ app.get("/api/:postId/like", (req, res) => {
 })
 
 
-app.patch("/api/posts/edit/:id", verifyToken, (req, res) => {
-  const userId = req.user.id
-  const { postId } = req.body
+app.patch("/api/posts/edit/:id", verifyToken, async (req, res) => {
+  const { email, username, content, id } = req.body.data
+  console.log(req.body.data)
+
+  try {
+    const result = await pool.query(
+      `UPDATE posts
+        SET content = $1
+        WHERE postid = $2 AND author_id = (
+        SELECT userid FROM users WHERE username = $3 AND email = $4
+       )`, 
+      [content, id, username, email]
+    );
+    
+
+    // if (result.rows.length === 0) {
+    //   return res.status(404).json({ message: "Post not found or you're not authorized to delete this post." });
+    // }
+
+    res.status(200).json({ message: "Post edited successfully.", success: true });
+    console.log("POST EDITEEEED HIHIHI")
+  } catch (err) {
+    console.error("Can't edit post: " + err);
+    res.status(500).json({ message: "An error occurred while editing the post." });
+  }
+
+  console.log("it working?")
 
 })
 
@@ -262,7 +286,6 @@ app.delete("/api/posts/delete/:id", verifyToken, async (req, res) => {
     console.error("Can't delete post: " + err);
     res.status(500).json({ message: "An error occurred while deleting the post." });
   }
-  console.log("HUH")
 });
 
 app.listen(port, () => {

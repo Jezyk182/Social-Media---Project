@@ -5,35 +5,50 @@ import useAuthStore from "../../stores/useAuthStore";
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { useMutation } from '@tanstack/react-query';
-import { newPost } from "../../api/newPost";
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { editPost } from "../../api/editPost";
+import useUserInfo from "../../stores/useUserInfo";
+import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 
 interface Inputs {
     content: string
 }
 
+
 const schema = z.object({
     content: z.string().nonempty("Post content is required!"),
 })
 
 
-const AddPostForm = () => {
+const EditPostForm: React.FC = () => {
+    const { email, username } = useUserInfo((state) => state.userInfo);
+    const { state } = useLocation()
+    const navigate = useNavigate()
+    const logout = useAuthStore(state => state.logout)
+    const params = useParams()
+    const postId = Number(params.id)
+    const queryClient = useQueryClient();
+
+
     const {
         register,
         handleSubmit,
         formState: { errors },
       } = useForm<Inputs>({
         defaultValues: {
-          content: ""
+          content: `${state.prevContent}`
         },
         resolver: zodResolver(schema)
     })
 
+
     const { error, isError, mutate } = useMutation({
-        mutationFn: (data : Inputs) => newPost(data),
-        onSuccess: (data : any) => {
+        mutationFn: ({ id, content }: { id: number; content: string }) => editPost(id, email, username, content),
+        onSuccess: (data: any) => {
             if(data.success) {
+                queryClient.invalidateQueries({ queryKey: ["post"] });
                 navigate("/")
             } else {
                 navigate("/login")
@@ -46,15 +61,11 @@ const AddPostForm = () => {
     })
 
 
-
-    const navigate = useNavigate()
-    const logout = useAuthStore(state => state.logout)
-
-
-    const onSubmit = (data : Inputs) => {
+    const onSubmit = (content: Inputs) => {
         const token = localStorage.getItem("accessToken")
         if(!token) {
             navigate("/login")
+            console.log("Dont have token")
             return
         }
 
@@ -66,10 +77,11 @@ const AddPostForm = () => {
         if (decodedToken.exp < currentTime) {
             logout()
             navigate("/login")
+            console.log("Token Expired")
             return
         }
-        console.log("Added Post: ", data)
-        mutate(data)
+
+        mutate({id: postId, content: content.content})
     }
 
 
@@ -77,7 +89,7 @@ const AddPostForm = () => {
         <div className="sad-mx-auto sad-min-w-96">
             <form method="post" onSubmit={handleSubmit(onSubmit)} className="sad-flex sad-flex-col">
                     <label className="sad-text-lg sad-font-medium sad-text-white">Post Content</label>
-                    <p className="sad-text-lg sad-text-white/50">Share with us any of yours experience</p>
+                    <p className="sad-text-lg sad-text-white/50">Edit your post so we know a little bit better :D</p>
                     <textarea
                     { ...register("content", { required: "Please enter post content." }) }
 
@@ -90,10 +102,10 @@ const AddPostForm = () => {
                     />
                     {errors.content && <span className="sad-text-red-500">{errors.content.message}</span>}
                     {isError && <span className="sad-text-red-500">{(error as any)?.message || 'Error submitting form data'}</span>}
-                <button className="sad-mt-5 sad-my-1 sad-text-xl sad-py-1 sad-px-4 sad-rounded sad-text-gray-800 sad-w-fit sad-bg-blue-500 sad-font-bold">Add Post</button>
+                <button className="sad-mt-5 sad-my-1 sad-text-xl sad-py-1 sad-px-4 sad-rounded sad-text-gray-800 sad-w-fit sad-bg-blue-500 sad-font-bold">Edit Post</button>
             </form>
         </div>
      );
 }
  
-export default AddPostForm;
+export default EditPostForm;

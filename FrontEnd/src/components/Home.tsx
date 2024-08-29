@@ -31,7 +31,7 @@ const Home = () => {
             <h1 className="sad-text-text">Total of {data.posts.length} posts</h1>
             {data.posts?.map((post : any, index : number) => {
                 return (
-                    <Post username={ post.username } email={ post.email } content={ post.content } postid={ post.postid } index={ index } />
+                    <Post username={ post.username } email={ post.email } content={ post.content } postid={ post.postid } key={index} />
                 )
             })}
         </div>

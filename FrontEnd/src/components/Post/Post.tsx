@@ -1,5 +1,5 @@
 import Heart from "../../icons/hearth";
-import EditPost from "../editPost";
+import EditPost from "../EditPosts/EditPost";
 import DeletePost from "../DeletePosts/DeletePost";
 import useUserInfo from "../../stores/useUserInfo";
 
@@ -9,7 +9,6 @@ interface postData {
     email: string;
     content: string;
     postid: number;
-    index: number;
 }
 
 const Post: React.FC<postData> = (props) => {
@@ -20,7 +19,7 @@ const Post: React.FC<postData> = (props) => {
     }
 
     return (
-        <div className="sad-mb-10 sad-py-5 sad-px-8 sad-border-b-2 sad-border-bgAcc" key={props.index}>
+        <div className="sad-mb-10 sad-py-5 sad-px-8 sad-border-b-2 sad-border-bgAcc">
             <p>{props.username}</p>
             <p>{props.email}</p>
             <p>{props.content}</p>
@@ -32,8 +31,8 @@ const Post: React.FC<postData> = (props) => {
                 <div className="sad-flex sad-items-center sad-gap-2">
                     { userInfo.email === props.email && userInfo.username === props.username 
                     ?<>
-                        <EditPost postEmail={ props.email } postUsername={ props.username } /> 
-                        <DeletePost postId={ props.postid }/>
+                        <EditPost postEmail={ props.email } postUsername={ props.username } postContent={ props.content } postId={ props.postid }/> 
+                        <DeletePost postId={ props.postid } />
                      </>
                     : null }
                     

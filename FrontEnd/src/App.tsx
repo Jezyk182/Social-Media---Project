@@ -29,7 +29,8 @@ const App = () => {
           <Route path="/contact" element={<Contact />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<LogIn />} />
-          <Route path="/add" element={<AddPost />} />
+          <Route path="/add" element={<AddPost forEdit={ false }/>} />
+          <Route path="/edit/:id" element={<AddPost forEdit={ true }/>} />
           <Route path="*" element={<h1>ERROR 404</h1>} />
         </Routes>
       </QueryClientProvider>
