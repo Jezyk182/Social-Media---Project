@@ -6,6 +6,7 @@ import useUserInfo from "../stores/useUserInfo";
 import Heart from "../icons/hearth"
 import EditPost from "./editPost";
 import DeletePost from "./DeletePosts/DeletePost";
+import Post from "./Post/Post";
 
 
 const Home = () => {
@@ -37,26 +38,7 @@ const Home = () => {
             <h1 className="sad-text-text">Total of {data.posts.length} posts</h1>
             {data.posts?.map((post : any, index : number) => {
                 return (
-                    <div className="sad-mb-10 sad-py-5 sad-px-8 sad-border-b-2 sad-border-bgAcc" key={index}>
-                        <p>{post.username}</p>
-                        <p>{post.email}</p>
-                        <p>{post.content}</p>
-                        <div className="sad-flex sad-items-center sad-justify-between">
-                            <div className="sad-flex sad-items-center sad-gap-2">
-                                <Heart stroke="#a0a0a0" className="hover:sad-stroke-text sad-cursor-pointer sad-ease-in-out sad-duration-200" onClick={ () => addLike() }/> 
-                                <p className=""> 0 </p>
-                            </div>
-                            <div className="sad-flex sad-items-center sad-gap-2">
-                                { userInfo.email === post.email && userInfo.username === post.username 
-                                ?<>
-                                    <EditPost postEmail={ post.email } postUsername={ post.username } /> 
-                                    <DeletePost postId={ post.postid }/>
-                                 </>
-                                : null }
-                                
-                            </div>
-                        </div>
-                    </div>
+                    <Post username={ post.username } email={ post.email } content={ post.content } postid={ post.postid } index={ index } />
                 )
             })}
         </div>
