@@ -1,4 +1,4 @@
-import Edit from "../../icons/edit";
+import EditIcon from "../../icons/edit";
 import useUserInfo from "../../stores/useUserInfo";
 import { Link } from "react-router-dom";
 
@@ -26,7 +26,7 @@ const EditPost: React.FC<props> = ({ postEmail, postUsername, postContent, postI
     return ( 
         <div>
             <Link to={`/edit/${postId}`} state={{ prevContent: postContent }}>
-                <Edit fill="#a0a0a0" className="hover:sad-fill-text sad-cursor-pointer sad-ease-in-out sad-duration-200" onClick={ handleEditPost }/>
+                <EditIcon stroke="#a0a0a0" className="hover:sad-fill-text sad-cursor-pointer sad-ease-in-out sad-duration-200" onClick={ handleEditPost }/>
             </Link>
         </div>
      );

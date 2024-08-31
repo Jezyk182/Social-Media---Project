@@ -36,9 +36,11 @@ const AddPost: React.FC<props> = ({forEdit}) => {
     }, [])
     
     return ( 
-        <div className="sad-mx-auto sad-bg-opacity-40 sad-backdrop-blur-sm sad-bg-slate-600 sad-w-fit sad-p-10 sad-rounded-xl sad-mt-40  sad-shadow-2xl sad-shadow-black">
-            <h1 className="sad-text-3xl sad-mb-6 sad-font-bold">{forEdit ? <p>Edit Post</p> : <p>Add Post</p>}</h1>
-            {forEdit ? <EditPostForm /> : <AddPostForm />}
+        <div className="sad-container sad-m-auto sad-flex sad-flex-col sad-rounded-lg sad-py-10 sad-bg-bg">
+            <div className="sad-mx-auto sad-mt-10">
+                <h1 className="sad-text-3xl sad-mb-6 sad-font-bold">{forEdit ? <p>Edit Post</p> : <p>Add Post</p>}</h1>
+                {forEdit ? <EditPostForm /> : <AddPostForm />}
+            </div>
         </div>
     );
 }

@@ -1,4 +1,4 @@
-import Delete from "../../icons/delete";
+import DeleteIcon from "../../icons/delete";
 import useUserInfo from "../../stores/useUserInfo";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deletePost } from "../../api/deletePost";
@@ -48,7 +48,7 @@ const DeletePost: React.FC<props> = ({ postId }) => {
 
     
     return (
-        <Delete
+        <DeleteIcon
             stroke="#a0a0a0"
             className="hover:sad-fill-text sad-cursor-pointer sad-ease-in-out sad-duration-200"
             onClick={handleDeletePost} // Corrected function call

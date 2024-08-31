@@ -94,15 +94,15 @@ const EditPostForm: React.FC = () => {
                     { ...register("content", { required: "Please enter post content." }) }
 
                     className={clsx(
-                        'sad-mt-3 sad-block sad-w-full sad-resize-none sad-rounded-lg sad-border-none sad-bg-white/5 sad-py-1.5 sad-px-3 sad-text-lg sad-text-white',
+                        'sad-mt-3 sad-block sad-w-full sad-resize-none sad-rounded-lg sad-border-none sad-bg-white/5 sad-py-1.5 sad-px-3 sad-text-lg sad-text-white sad-shadow-2xl sad-shadow-black',
                         'focus:sad-outline-none data-[focus]:sad-outline-2 data-[focus]:sad-outline-offset-2 data-[focus]:sad-outline-white/25'
                     )}
-                    rows={5}
-                    cols={50}
+                    rows={15}
+                    cols={100}
                     />
                     {errors.content && <span className="sad-text-red-500">{errors.content.message}</span>}
                     {isError && <span className="sad-text-red-500">{(error as any)?.message || 'Error submitting form data'}</span>}
-                <button className="sad-mt-5 sad-my-1 sad-text-xl sad-py-1 sad-px-4 sad-rounded sad-text-gray-800 sad-w-fit sad-bg-blue-500 sad-font-bold">Edit Post</button>
+                <button className="sad-mt-10 sad-my-1 sad-text-xl sad-py-1 sad-px-4 sad-rounded sad-text-gray-800 sad-w-fit sad-bg-blue-500 sad-font-bold">Edit Post</button>
             </form>
         </div>
      );

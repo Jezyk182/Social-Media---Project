@@ -2,14 +2,18 @@ import { Link } from "react-router-dom";
 import useAuthStore from "../../stores/useAuthStore";
 import LogIn from "./LogIn";
 import UserInfo from "./UserInfo";
+import HomeIcon  from "../../icons/home";
+import AboutIcon from "../../icons/about";
+import AddIcon from "../../icons/add";
+import SearchIcon from "../../icons/search";
 
 const Navbar = () => {
 
     const links = [
-        { name: "Home", path: "/" },
-        { name: "About", path: "/about" },
-        { name: "Contact", path: "/contact" },
-        { name: "Add Post", path: "/add"}
+        { name: "Home", path: "/", icon: <HomeIcon /> },
+        { name: "About", path: "/about", icon: <AboutIcon /> },
+        { name: "Search", path: "/search", icon: <SearchIcon /> },
+        { name: "Add Post", path: "/add", icon: <AddIcon /> }
     ]
 
     const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
@@ -17,22 +21,22 @@ const Navbar = () => {
 
 
     return (
-        <nav className="sad-container sad-m-auto sad-flex sad-justify-between sad-items-center sad-text-2xl sad-py-2 sad-border-b-2 sad-border-text  sad-sticky sad-top-0 sad-z-50 sad-bg-bg
+        <nav className="sad-w-fit sad-m-auto sad-flex sad-flex-col sad-gap-6 sad-justify-between sad-items-center sad-text-2xl sad-py-2 sad-border-r-2 sad-border-text sad-bg-bg sad-absolute sad-top-0 sad-z-50
         ">
             <div>
+                {isLoggedIn ? <UserInfo /> : <LogIn />}
+            </div>
+            <div className="sad-flex sad-flex-col sad-gap-6">
                 {links.map((link, id) => {
                     return (
                         <Link 
                             to={link.path} 
                             key={id}
                             className="sad-mx-5 sad-text-text sad-duration-200 sad-ease-out hover:sad-text-textAcc">
-                                {link.name}
-                        </Link>
+                                {link.icon}
+                            </Link>
                     )
                 })}
-            </div>
-            <div>
-                {isLoggedIn ? <UserInfo /> : <LogIn />}
             </div>
         </nav>
     )

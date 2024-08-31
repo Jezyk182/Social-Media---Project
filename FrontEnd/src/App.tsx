@@ -1,6 +1,6 @@
 import Navbar from "./components/Navbar/Navbar";
 import Home from "./components/Home";
-import Contact from "./components/Contact";
+import Search from "./components/Search";
 import { Routes, Route, useLocation } from "react-router-dom";
 import SignUp from "./components/SignUp/SignUp";
 import LogIn from "./components/LogIn/LogIn";
@@ -26,7 +26,7 @@ const App = () => {
         {!hideNavbarPaths.includes(location.pathname) && <Navbar />}
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/contact" element={<Contact />} />
+          <Route path="/search" element={<Search />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<LogIn />} />
           <Route path="/add" element={<AddPost forEdit={ false }/>} />

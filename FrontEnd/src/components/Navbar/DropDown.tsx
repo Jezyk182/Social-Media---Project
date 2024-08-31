@@ -2,6 +2,7 @@ import { Menu, MenuButton, MenuItem, MenuItems, Transition, MenuSeparator } from
 import useUserInfo from '../../stores/useUserInfo'
 import LogOut from './LogOut'
 import clsx from "clsx"
+import UserIcon from '../../icons/user'
 
 const DropDown = () => {
 
@@ -10,8 +11,8 @@ const DropDown = () => {
     return (
         <Menu as="div" className="sad-relative sad-inline-block sad-text-left">
           <div>
-            <MenuButton className="sad-mx-5 sad-duration-200 sad-ease-out hover:sad-text-textAcc sad-inline-flex sad-w-full sad-justify-center sad-gap-x-1.5 sad-px-3 sad-text-2xl sad-font-semibolda">
-              My Account
+            <MenuButton className="sad-duration-200 sad-ease-out hover:sad-text-textAcc sad-inline-flex sad-w-full sad-justify-center sad-gap-x-1.5 sad-px-3 sad-text-2xl sad-font-semibolda">
+              <UserIcon />
               {/* <ChevronDownIcon className="-mr-1 h-5 w-5 text-gray-400" aria-hidden="true" /> */}
             </MenuButton>
           </div>
@@ -24,7 +25,7 @@ const DropDown = () => {
             leaveFrom="sad-transform sad-opacity-100 sad-scale-100"
             leaveTo="sad-transform sad-opacity-0 sad-scale-95"
           >
-            <MenuItems className="sad-absolute sad-right-0 sad-z-10 sad-mt-2 sad-w-64 sad-origin-top-right sad-rounded-3xl sad-bg-slate-600 sad-shadow-lg sad-ring-1 sad-ring-black sad-ring-opacity-5 focus:sad-outline-none sad-border-text sad-border">
+            <MenuItems className="sad-absolute sad-top-0 sad-left-20 sad-z-10 sad-mt-2 sad-w-64 sad-origin-top-right sad-rounded-3xl sad-bg-slate-600 sad-shadow-lg sad-ring-1 sad-ring-black sad-ring-opacity-5 focus:sad-outline-none sad-border-text sad-border">
             <div className="sad-py-1">
                 <MenuItem>
                     <p className='sad-block sad-px-4 sad-py-2 sad-text-lg'>Logged as: 

@@ -1,4 +1,4 @@
-import Heart from "../../icons/hearth";
+import HeartIcon from "../../icons/hearth";
 import EditPost from "../EditPosts/EditPost";
 import DeletePost from "../DeletePosts/DeletePost";
 import useUserInfo from "../../stores/useUserInfo";
@@ -29,7 +29,7 @@ const Post: React.FC<postData> = (props) => {
             <p>{props.content}</p>
             <div className="sad-flex sad-items-center sad-justify-between">
                 <div className="sad-flex sad-items-center sad-gap-2">
-                    <Heart stroke="#a0a0a0" className="hover:sad-stroke-text sad-cursor-pointer sad-ease-in-out sad-duration-200 sad-mt-2" onClick={ () => addLike() }/> 
+                    <HeartIcon stroke="#a0a0a0" className="hover:sad-stroke-text sad-cursor-pointer sad-ease-in-out sad-duration-200 sad-mt-2" onClick={ () => addLike() }/> 
                     <p className=""> 0 </p>
                 </div>
                 <div className="sad-flex sad-items-center sad-gap-2">
