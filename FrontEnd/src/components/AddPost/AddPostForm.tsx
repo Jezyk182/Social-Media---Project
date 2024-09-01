@@ -90,7 +90,7 @@ const AddPostForm = () => {
                     />
                     {errors.content && <span className="sad-text-red-500">{errors.content.message}</span>}
                     {isError && <span className="sad-text-red-500">{(error as any)?.message || 'Error submitting form data'}</span>}
-                <button className="sad-mt-10 sad-my-1 sad-text-xl sad-py-1 sad-px-4 sad-rounded sad-text-gray-800 sad-w-fit sad-bg-blue-500 sad-font-bold">Add Post</button>
+                <button className="sad-mt-10 sad-my-1 sad-text-xl sad-py-1 sad-px-4 sad-rounded sad-text-gray-800 sad-w-fit sad-bg-blue-500 sad-font-bold sad-shadow-md sad-shadow-black hover:sad-bg-blue-600 sad-duration-100 sad-ease-in-out">Add Post</button>
             </form>
         </div>
      );

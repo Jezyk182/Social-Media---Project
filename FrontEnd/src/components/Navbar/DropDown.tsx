@@ -25,7 +25,7 @@ const DropDown = () => {
             leaveFrom="sad-transform sad-opacity-100 sad-scale-100"
             leaveTo="sad-transform sad-opacity-0 sad-scale-95"
           >
-            <MenuItems className="sad-absolute sad-top-0 sad-left-20 sad-z-10 sad-mt-2 sad-w-64 sad-origin-top-right sad-rounded-3xl sad-bg-slate-600 sad-shadow-lg sad-ring-1 sad-ring-black sad-ring-opacity-5 focus:sad-outline-none sad-border-text sad-border">
+            <MenuItems className="sad-absolute sad-top-0 sad-left-20 sad-z-10 sad-mt-2 sad-w-64 sad-origin-top-right sad-rounded-xl sad-bg-secbg sad-shadow-lg sad-shadow-black focus:sad-outline-none">
             <div className="sad-py-1">
                 <MenuItem>
                     <p className='sad-block sad-px-4 sad-py-2 sad-text-lg'>Logged as: 
@@ -38,7 +38,7 @@ const DropDown = () => {
                     <a
                       href="#"
                       className={clsx(
-                        focus ? 'sad-bg-slate-800 sad-text-gray-200' : 'sad-text-gray-100',
+                        focus ? 'sad-bg-bg sad-text-gray-200' : 'sad-text-gray-100',
                         'sad-block sad-px-4 sad-py-2 sad-text-lg sad-duration-200 sad-ease-out hover:sad-text-textAcc'
                       )}
                     >
@@ -51,7 +51,7 @@ const DropDown = () => {
                     <a
                         href="#"
                         className={clsx(
-                        focus ? 'sad-bg-slate-800 sad-text-gray-200' : 'sad-text-gray-100',
+                        focus ? 'sad-bg-bg sad-text-gray-200' : 'sad-text-gray-100',
                         'sad-block sad-px-4 sad-py-2 sad-text-lg sad-duration-200 sad-ease-out hover:sad-text-textAcc'
                         )}
                     >

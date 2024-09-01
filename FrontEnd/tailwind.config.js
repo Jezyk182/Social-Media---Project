@@ -11,10 +11,11 @@ export default {
         // BG IMAGE
       },
       colors: {
-        bg: "#222831",
-        bgAcc: "#31363F",
-        textAcc: "#76ABAE",
-        text: "#EEEEEE"
+        bg: "#212121",
+        secbg: "#161618",
+        bgAcc: "#8f8f8f",
+        textAcc: "#c96202",
+        text: "#dbdbdb"
       }
     }
     

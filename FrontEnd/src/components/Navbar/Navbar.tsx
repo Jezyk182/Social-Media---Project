@@ -21,11 +21,11 @@ const Navbar = () => {
 
 
     return (
-        <nav className="sad-w-fit sad-m-auto sad-flex sad-flex-col sad-gap-6 sad-justify-between sad-items-center sad-text-2xl sad-py-2 sad-border-r-2 sad-border-text sad-bg-bg sad-absolute sad-top-0 sad-z-50
-        ">
+        <nav className="sad-w-fit sad-h-full sad-m-auto sad-flex sad-flex-col sad-gap-4 sad-justify-start sad-items-center sad-text-2xl sad-py-2  sad-border-text sad-bg-secbg sad-absolute sad-top-0 sad-z-50">
             <div>
                 {isLoggedIn ? <UserInfo /> : <LogIn />}
             </div>
+            <span className="sad-block sad-w-3/4 sad-h-px sad-bg-text sad-my-2"></span>
             <div className="sad-flex sad-flex-col sad-gap-6">
                 {links.map((link, id) => {
                     return (
