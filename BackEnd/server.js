@@ -38,7 +38,6 @@ app.use(session({
 
 const verifyToken = (req, res, next) => {
   const authHeader = req.headers['authorization'];
-  console.log("REQUEST:" + req)
   if (!authHeader) {
     console.log('No token provided.');
     return res.status(403).json({ message: 'No token provided.' });
@@ -73,7 +72,6 @@ app.get("/api/posts", verifyToken, async (req, res) => {
     const request = await pool.query("SELECT postid, content, username, email, date, edited FROM posts INNER JOIN users ON users.userid = posts.author_id ORDER BY postid DESC");
 
     if (request.rows.length > 0) {
-        console.log("returned data: ", request.rows)
         return res.json({posts: request.rows})
     }  else {
         console.log("No Data: ", request.rows)
@@ -89,8 +87,6 @@ app.post("/api/addPost", verifyToken, async (req, res) => {
 
   const { content } = req.body
   const { userID } = req
-
-  console.log(content, userID)
 
   try {
     const d = new Date()
@@ -222,13 +218,6 @@ app.post("/api/login", async (req, res) => {
     }
 })
 
-app.get("/api/:postId/like", (req, res) => {
-  const userID = req.user.id
-  const { postID } = req.body
-  console.log(userID)
-})
-
-
 app.patch("/api/posts/edit/:id", verifyToken, async (req, res) => {
   const { email, username, content, id } = req.body.data
   console.log(req.body.data)
@@ -293,6 +282,42 @@ app.delete("/api/posts/delete/:id", verifyToken, async (req, res) => {
     res.status(500).json({ message: "An error occurred while deleting the post." });
   }
 });
+
+
+app.get("/api/posts/likes/get/:id", async (req, res) => {
+  console.log("LIKES: ")
+  const postid = req.params.id * 1
+  const {email, username} = req.query
+  try {
+    const result1 = await pool.query(
+      `SELECT COUNT(*) 
+        FROM likes 
+        WHERE postid = $1;`, 
+      [postid]
+    );
+    console.log("RESULT: ", result1.rows)
+    const result2 = await pool.query(
+      `SELECT * FROM likes 
+        WHERE postid = $1 
+        AND userid = (
+        SELECT userid FROM users WHERE username = $2 AND email = $3
+        )`, 
+      [postid, username, email])
+    
+    console.log(result2.rows.length)
+    console.log(result2.rows.length != 0 ? true : false)
+
+    return res.json({ 
+      likes: result1.rows,
+      liked: result2.rows.length != 0 ? true : false
+    })
+  } catch (err) {
+    console.error("Can't get post's likes: " + err);
+    res.status(500).json({ message: "An error occurred while deleting the post." });
+  }
+})
+
+
 
 app.listen(port, () => {
     console.log(`Server running on port ${port}.`)

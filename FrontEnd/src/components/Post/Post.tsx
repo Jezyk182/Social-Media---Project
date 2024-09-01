@@ -1,7 +1,7 @@
-import HeartIcon from "../../icons/hearth";
 import EditPost from "../EditPosts/EditPost";
 import DeletePost from "../DeletePosts/DeletePost";
 import useUserInfo from "../../stores/useUserInfo";
+import LikePost from "../LikePost/LikePost";
 
 
 interface postData {
@@ -17,10 +17,7 @@ const Post: React.FC<postData> = (props) => {
     const userInfo = useUserInfo((state) => state.userInfo)
     const utcDate = new Date(props.date);
     const postDate = utcDate.toLocaleDateString();
-
-    const addLike = () => {
-        console.log("liked")
-    }
+    console.log("POST ID: ", props.postid)
 
     return (
         <div className="sad-mb-10 sad-py-5 sad-px-8 sad-border-b-2 sad-border-bgAcc">
@@ -29,8 +26,7 @@ const Post: React.FC<postData> = (props) => {
             <p>{props.content}</p>
             <div className="sad-flex sad-items-center sad-justify-between">
                 <div className="sad-flex sad-items-center sad-gap-2">
-                    <HeartIcon stroke="#a0a0a0" className="hover:sad-stroke-text sad-cursor-pointer sad-ease-in-out sad-duration-200 sad-mt-2" onClick={ () => addLike() }/> 
-                    <p className=""> 0 </p>
+                     <LikePost postId={ props.postid }/>
                 </div>
                 <div className="sad-flex sad-items-center sad-gap-2">
                     { userInfo.email === props.email && userInfo.username === props.username 

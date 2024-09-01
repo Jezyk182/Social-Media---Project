@@ -1,13 +1,24 @@
-import axios from "axios"
+import axios from "axios";
+
+interface props {
+    id: number;
+    username: string | null;
+    email: string | null;
+}
 
 
-export const editPost = async ( id: number, email: string | null, username: string | null, content: string ) => {
-    return await axios
-    .patch(`/api/posts/edit/${id}`, {
-        data: { id, email, username, content }
-    })
-    .then( res => {
-        return res.data
+export function fetchLikes({id, username, email}: props) {
+    console.log("Fetching likes...");
+    return axios
+    .get(`/api/posts/likes/get/${ id }`, {
+        params: { 
+            email,
+            username,
+        }}
+    )
+    .then(res => {
+        console.log("Likes response: ", res.data);
+        return res.data;
     })
     .catch(err => {
         if (err.response) {
