@@ -15,7 +15,9 @@ export default {
         secbg: "#161618",
         bgAcc: "#8f8f8f",
         textAcc: "#c96202",
-        text: "#dbdbdb"
+        text: "#eeeeee",
+        navIcon: "#b8b8b8",
+        navIconHover: "#ffffff"
       }
     }
     

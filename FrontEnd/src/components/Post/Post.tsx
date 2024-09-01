@@ -42,7 +42,7 @@ const Post: React.FC<postData> = (props) => {
                     
                 </div>
             </div>
-            <p className="sad-text-gray-500 sad-mt-2 -sad-mb-2">{ props.edited ? "Edited" : "Published" } at: { postDate }</p>
+            <p className="sad-text-neutral-400 sad-mt-2 -sad-mb-2">{ props.edited ? "Edited" : "Published" } at: { postDate }</p>
         </div>
     )
 }

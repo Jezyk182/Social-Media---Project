@@ -11,7 +11,7 @@ const DropDown = () => {
     return (
         <Menu as="div" className="sad-relative sad-inline-block sad-text-left">
           <div>
-            <MenuButton className="sad-duration-200 sad-ease-out hover:sad-text-textAcc sad-inline-flex sad-w-full sad-justify-center sad-gap-x-1.5 sad-px-3 sad-text-2xl sad-font-semibolda">
+            <MenuButton className="sad-text-navIcon sad-duration-200 sad-ease-out hover:sad-text-navIconHover sad-inline-flex sad-w-full sad-justify-center sad-gap-x-1.5 sad-px-3 sad-text-2xl sad-font-semibolda">
               <UserIcon />
               {/* <ChevronDownIcon className="-mr-1 h-5 w-5 text-gray-400" aria-hidden="true" /> */}
             </MenuButton>
@@ -25,7 +25,7 @@ const DropDown = () => {
             leaveFrom="sad-transform sad-opacity-100 sad-scale-100"
             leaveTo="sad-transform sad-opacity-0 sad-scale-95"
           >
-            <MenuItems className="sad-absolute sad-top-0 sad-left-20 sad-z-10 sad-mt-2 sad-w-64 sad-origin-top-right sad-rounded-xl sad-bg-secbg sad-shadow-lg sad-shadow-black focus:sad-outline-none">
+            <MenuItems className="sad-absolute sad-top-0 sad-left-20 sad-z-10 sad-w-64 sad-origin-top-right sad-rounded-xl sad-bg-secbg sad-shadow-lg sad-shadow-black focus:sad-outline-none">
             <div className="sad-py-1">
                 <MenuItem>
                     <p className='sad-block sad-px-4 sad-py-2 sad-text-lg'>Logged as: 
@@ -38,8 +38,8 @@ const DropDown = () => {
                     <a
                       href="#"
                       className={clsx(
-                        focus ? 'sad-bg-bg sad-text-gray-200' : 'sad-text-gray-100',
-                        'sad-block sad-px-4 sad-py-2 sad-text-lg sad-duration-200 sad-ease-out hover:sad-text-textAcc'
+                        focus ? 'sad-bg-bg sad-text-gray-200' : 'sad-text-navIcon',
+                        'sad-block sad-px-4 sad-py-2 sad-text-lg sad-duration-200 sad-ease-out hover:sad-text-navIconHover'
                       )}
                     >
                       Account settings
@@ -51,8 +51,8 @@ const DropDown = () => {
                     <a
                         href="#"
                         className={clsx(
-                        focus ? 'sad-bg-bg sad-text-gray-200' : 'sad-text-gray-100',
-                        'sad-block sad-px-4 sad-py-2 sad-text-lg sad-duration-200 sad-ease-out hover:sad-text-textAcc'
+                        focus ? 'sad-bg-bg sad-text-gray-200' : 'sad-text-navIcon',
+                        'sad-block sad-px-4 sad-py-2 sad-text-lg sad-duration-200 sad-ease-out hover:sad-text-navIconHover'
                         )}
                     >
                         <LogOut />

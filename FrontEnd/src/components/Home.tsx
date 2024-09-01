@@ -28,7 +28,7 @@ const Home = () => {
     if (isError) return <div>Error: {error.message}</div>;
     return ( 
         <div className="sad-container sad-m-auto sad-flex sad-flex-col sad-rounded-lg sad-px-64 sad-py-10 sad-bg-bg">
-            <h1 className="sad-text-text">Total of {data.posts.length} posts</h1>
+            <h1 className="sad-text-text sad-text-4xl sad-font-bold sad-mb-10">Total of {data.posts.length} posts</h1>
             {data.posts?.map((post : any, index : number) => {
                 console.log(post.date)
                 return (
