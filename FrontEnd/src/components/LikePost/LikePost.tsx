@@ -1,28 +1,30 @@
-import { HeartIconBlank , HeartIconFilled} from "../../icons/hearth";
+import { HeartIconBlank, HeartIconFilled } from "../../icons/hearth";
 import { useState, useEffect } from "react";
 import useUserInfo from "../../stores/useUserInfo";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { fetchLikes } from "../../api/likes/getLikes";
+import { addLike } from "./addLike";
+import { dislike } from "./dislike";
 
 interface props {
     postId: number;
 }
-
 
 const LikePost: React.FC<props> = ({ postId }) => {
     const { email, username } = useUserInfo((state) => state.userInfo);
     const [likes, setLikes] = useState(0);
     const [liked, setLiked] = useState(false);
 
+    const queryClient = useQueryClient();
+
+
     const { data, isError, isLoading } = useQuery({
         queryKey: ["likes", postId],
         queryFn: () => fetchLikes({ id: postId, email, username }),
     });
 
-    // Update state when data is available
     useEffect(() => {
         if (data) {
-            console.log("DATA: ", data.likes.count)
             setLikes(data.likes[0]?.count * 1);
             setLiked(data.liked);
         }
@@ -31,9 +33,11 @@ const LikePost: React.FC<props> = ({ postId }) => {
     function changeLikes() {
         if (liked) {
             setLikes((prevLikes) => prevLikes * 1 - 1);
+            dislike(postId, email, username, queryClient)
             setLiked(false);
         } else {
             setLikes((prevLikes) => prevLikes * 1 + 1);
+            addLike(postId, email, username, queryClient); // Pass email and username here
             setLiked(true);
         }
     }
@@ -60,5 +64,5 @@ const LikePost: React.FC<props> = ({ postId }) => {
         </>
     );
 };
- 
+
 export default LikePost;

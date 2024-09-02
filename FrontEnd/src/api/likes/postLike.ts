@@ -1,23 +1,22 @@
 import axios from "axios";
 
 interface props {
-    id: number;
+    postId: number;
     username: string | null;
     email: string | null;
 }
 
-
-export function fetchLikes({id, username, email}: props) {
-    console.log("Fetching likes...");
+export function postLike({postId, username, email}: props) {
+    console.log("Adding Like...");
     return axios
-    .get(`/api/likes/get/${ id }`, {
-        params: { 
-            email,
+    .post(`/api/likes/post/${ postId }`, {
+        data: { 
             username,
+            email,
         }}
     )
     .then(res => {
-        console.log("Likes response: ", res.data);
+        console.log("Addin Like response: ", res.data);
         return res.data;
     })
     .catch(err => {

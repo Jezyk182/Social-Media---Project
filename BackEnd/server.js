@@ -201,7 +201,7 @@ app.post("/api/login", async (req, res) => {
                     success: true, 
                     accessToken,
                     username: user.username,
-                    email: user.email
+                    email: user.email,
                   })
                 } else {
                   //Did not pass password check
@@ -284,28 +284,22 @@ app.delete("/api/posts/delete/:id", verifyToken, async (req, res) => {
 });
 
 
-app.get("/api/posts/likes/get/:id", async (req, res) => {
-  console.log("LIKES: ")
+app.get("/api/likes/get/:id", async (req, res) => {
   const postid = req.params.id * 1
   const {email, username} = req.query
   try {
     const result1 = await pool.query(
       `SELECT COUNT(*) 
         FROM likes 
-        WHERE postid = $1;`, 
+        WHERE post_id = $1;`, 
       [postid]
     );
     console.log("RESULT: ", result1.rows)
     const result2 = await pool.query(
       `SELECT * FROM likes 
-        WHERE postid = $1 
-        AND userid = (
-        SELECT userid FROM users WHERE username = $2 AND email = $3
-        )`, 
+        WHERE post_id = $1 
+        AND username = $2 AND email = $3`, 
       [postid, username, email])
-    
-    console.log(result2.rows.length)
-    console.log(result2.rows.length != 0 ? true : false)
 
     return res.json({ 
       likes: result1.rows,
@@ -313,7 +307,44 @@ app.get("/api/posts/likes/get/:id", async (req, res) => {
     })
   } catch (err) {
     console.error("Can't get post's likes: " + err);
-    res.status(500).json({ message: "An error occurred while deleting the post." });
+    res.status(500).json({ message: "An error occurred while getting a likes." });
+  }
+})
+
+
+app.post("/api/likes/post/:id", async (req, res) => {
+  const postid = req.params.id * 1
+  const { email, username } = req.body.data
+  console.log(req.body.data)
+  try {
+    const result = await pool.query(
+      `INSERT INTO likes (post_id, username, email) 
+      VALUES ($1, $2, $3)`, 
+      [postid, username, email]
+    );
+
+    return res.status(200).json({ message: "Post liked successfully.", success: true })
+  } catch (err) {
+    console.error("Can't like a post: " + err);
+    res.status(500).json({ message: "An error occurred while liking a post." });
+  }
+})
+
+
+app.delete("/api/likes/delete/:id", async (req, res) => {
+  const postid = req.params.id * 1
+  console.log("DISLIKE: ", req.body)
+  const { email, username } = req.body
+  try {
+    const result = await pool.query(
+      `DELETE FROM likes WHERE post_id = $1 AND username = $2 AND email = $3`, 
+      [postid, username, email]
+    );
+
+    return res.status(200).json({ message: "Disliked post successfully.", success: true })
+  } catch (err) {
+    console.error("Can't dislike a post: " + err);
+    res.status(500).json({ message: "An error occurred while disliking a post." });
   }
 })
 
