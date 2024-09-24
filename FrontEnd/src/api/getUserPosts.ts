@@ -1,18 +1,16 @@
 import axios from "axios";
 
 interface props {
-    id: number;
     email: string | null;
     username: string | null;
 }
 
-export const deletePost = async ({id, email, username}: props) => {
+export const fetchUserPosts = async ({ email, username }: props) => {
     return await axios
-    .delete(`/api/posts/delete/${id}`, {
-        data: { email, username }
+    .get(`/api/userPosts`, {
+        params: { email, username }
     })
     .then( res => {
-        console.log(`Deleted post with ID ${id}`)
         return res.data
     })
     .catch(err => {

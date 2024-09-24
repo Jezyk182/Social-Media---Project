@@ -141,6 +141,24 @@ app.post("/api/addPost", verifyToken, async (req, res) => {
 })
 
 
+app.get('/api/userPosts', async (req, res) => {
+  const data = req.query
+  const { username, email } = data
+  try {
+    const request = await pool.query("SELECT postid, content, username, email, date, edited FROM posts INNER JOIN users ON users.userid = posts.author_id WHERE username = $1 AND email = $2 ORDER BY postid DESC", [username, email]);
+
+    if (request.rows.length > 0) {
+        return res.json({posts: request.rows})
+    }  else {
+        console.log("No User Posts: ", request.rows)
+        return res.json({posts: request.rows})
+    }
+  } catch (err) {
+    console.log(err);
+  }
+})
+
+
 
 // Handle form submission
 app.post('/api/register', async (req, res) => {

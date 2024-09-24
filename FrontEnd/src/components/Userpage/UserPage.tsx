@@ -3,18 +3,21 @@ import prof from "../../../public/prof_default.png"
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import { fetchPosts } from "../../api/getPosts";
+import { fetchUserPosts } from "../../api/getUserPosts";
 import Post from "../Post/Post";
 
 const UserPage = () => {
     const { username, email } = useUserInfo((state) => state.userInfo);
+    console.log(username, email)
 
     const image = prof
 
     const { data, isLoading, isError, error } = useQuery({
         queryKey: ["post"],
-        queryFn: fetchPosts
+        queryFn: () => fetchUserPosts({username, email})
     })
+
+    console.log(data)
 
     const navigate = useNavigate();
     const isUserInfoAvailable = username !== null && email !== null;
