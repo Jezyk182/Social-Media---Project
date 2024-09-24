@@ -8,6 +8,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import AddPost from "./components/AddPost/AddPost";
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import axiosConfig from "./axiosConfig";
+import UserPage from "./components/Userpage/UserPage";
 
 const queryClient = new QueryClient();
 
@@ -23,16 +24,19 @@ const App = () => {
     <>
       <QueryClientProvider client={queryClient}>
         <ReactQueryDevtools />
-        {!hideNavbarPaths.includes(location.pathname) && <Navbar />}
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/search" element={<Search />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/login" element={<LogIn />} />
-          <Route path="/add" element={<AddPost forEdit={ false }/>} />
-          <Route path="/edit/:id" element={<AddPost forEdit={ true }/>} />
-          <Route path="*" element={<h1>ERROR 404</h1>} />
-        </Routes>
+        <div className="sad-flex sad-w-screen">
+          {!hideNavbarPaths.includes(location.pathname) && <Navbar />}
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/search" element={<Search />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/login" element={<LogIn />} />
+            <Route path="/add" element={<AddPost forEdit={ false }/>} />
+            <Route path="/edit/:id" element={<AddPost forEdit={ true }/>} />
+            <Route path="/user" element={ <UserPage /> } />
+            <Route path="*" element={<h1>ERROR 404</h1>} />
+          </Routes>
+        </div>
       </QueryClientProvider>
     </>
   );

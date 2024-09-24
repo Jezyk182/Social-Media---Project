@@ -21,7 +21,7 @@ const Navbar = () => {
 
 
     return (
-        <nav className="sad-w-fit sad-h-full sad-m-auto sad-flex sad-flex-col sad-gap-4 sad-justify-start sad-items-center sad-text-2xl sad-py-2 sad-bg-secbg sad-absolute sad-top-0 sad-z-50">
+        <nav className="sad-w-fit sad-h-screen sad-m-0 sad-flex sad-flex-col sad-gap-4 sad-justify-start sad-items-center sad-text-2xl sad-py-2 sad-bg-secbg sad-sticky sad-top-0 sad-z-50">
             <div>
                 {isLoggedIn ? <UserInfo /> : <LogIn />}
             </div>
@@ -34,7 +34,7 @@ const Navbar = () => {
                             key={id}
                             className="sad-mx-5 sad-text-navIcon sad-duration-200 sad-ease-out hover:sad-text-navIconHover">
                                 {link.icon}
-                            </Link>
+                        </Link>
                     )
                 })}
             </div>

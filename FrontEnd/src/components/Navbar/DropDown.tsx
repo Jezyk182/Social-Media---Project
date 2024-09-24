@@ -3,6 +3,7 @@ import useUserInfo from '../../stores/useUserInfo'
 import LogOut from './LogOut'
 import clsx from "clsx"
 import UserIcon from '../../icons/user'
+import { Link } from 'react-router-dom'
 
 const DropDown = () => {
 
@@ -35,28 +36,27 @@ const DropDown = () => {
                 <MenuSeparator className="sad-my-1 sad-h-px sad-bg-text sad-w-4/5 sad-ml-4" />
                 <MenuItem>
                   {({ focus }) => (
-                    <a
-                      href="#"
+                    <Link
+                      to="/user"
                       className={clsx(
                         focus ? 'sad-bg-bg sad-text-gray-200' : 'sad-text-navIcon',
                         'sad-block sad-px-4 sad-py-2 sad-text-lg sad-duration-200 sad-ease-out hover:sad-text-navIconHover'
                       )}
                     >
                       Account settings
-                    </a>
+                    </Link>
                   )}
                 </MenuItem>
                 <MenuItem>
                     {({ focus }) => (
-                    <a
-                        href="#"
+                    <div
                         className={clsx(
                         focus ? 'sad-bg-bg sad-text-gray-200' : 'sad-text-navIcon',
                         'sad-block sad-px-4 sad-py-2 sad-text-lg sad-duration-200 sad-ease-out hover:sad-text-navIconHover'
                         )}
                     >
                         <LogOut />
-                    </a>
+                    </div>
                     )}
                 </MenuItem>
               </div>
