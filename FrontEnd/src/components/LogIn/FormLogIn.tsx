@@ -33,13 +33,15 @@ const FormLogIn: React.FC = () => {
   const login = useAuthStore((state) => state.login); // Access the login function from the store
   const getInfo = useUserInfo((state) => state.getInfo);
 
-  const { data, error, isError, isSuccess, mutate } = useMutation({
+  const { data, mutate } = useMutation({
     mutationFn: (data : LoginData) => loginUser(data),
     onSuccess: (data : any) => {
       if(data.success) {
         const userInfo = {
           username: data.username,
           email: data.email,
+          bio: data.bio,
+          pfp: data.pfp
         };
         const accessToken = data.accessToken;
         localStorage.setItem('accessToken', accessToken);

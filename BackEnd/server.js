@@ -106,38 +106,6 @@ app.post("/api/addPost", verifyToken, async (req, res) => {
     console.log(err)
     return res.status(500).json({ message: "Server issues... Try again later ", success: false })
   }
-
-
-  // if(req.session.username) {
-  //   const data = req.body
-  //   const content = data.content
-
-  //   try {
-  //     const user = await pool.query("SELECT userid FROM users WHERE username = $1", [req.session.username])
-  //     const userid = user.rows[0].userid
-  //     console.log(userid)
-  //     const d = new Date()
-  //     const day = d.getDay()
-  //     const month = d.getMonth()
-  //     const year = d.getFullYear()
-
-  //     const date = `${day}-${month}-${year}`
-  //     console.log(date)
-
-  //     const result = await pool.query(
-  //       "INSERT INTO posts (content, author_id, date, likes) VALUES ($1, $2, $3, $4) RETURNING *",
-  //       [content, userid, date, 0]
-  //     );
-
-  //     return res.json({message: "Success!", success: true})
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  //     return res.json({success: true, username: req.session.username})
-  // } else {
-  //   return res.json({success: false})
-  //  }
-  
 })
 
 
@@ -220,6 +188,8 @@ app.post("/api/login", async (req, res) => {
                     accessToken,
                     username: user.username,
                     email: user.email,
+                    pfp: user.pfp_nr,
+                    bio: user.bio
                   })
                 } else {
                   //Did not pass password check
@@ -267,9 +237,6 @@ app.patch("/api/posts/edit/:id", verifyToken, async (req, res) => {
     console.error("Can't edit post: " + err);
     res.status(500).json({ message: "An error occurred while editing the post." });
   }
-
-  console.log("it working?")
-
 })
 
 
@@ -366,7 +333,27 @@ app.delete("/api/likes/delete/:id", async (req, res) => {
   }
 })
 
+app.patch("/api/user/update", verifyToken, async (req, res) => {
+  const { username, email, bio, pfp_nr } = req.body
+  console.log("USERINFOOOOO:", req.body)
+  console.log("222222222222:", username, email, bio, pfp_nr)
 
+  try {
+    const result = await pool.query(
+      `UPDATE users
+        SET pfp_nr = $1, bio = $2 
+        WHERE userid = (
+        SELECT userid FROM users WHERE username = $3 AND email = $4
+       )`, 
+      [pfp_nr, bio, username, email]
+    );
+
+    res.status(200).json({ message: "User Info updated.", success: true });
+  } catch (err) {
+    console.error("Can't edit post: " + err);
+    res.status(500).json({ message: "An error occurred while updating user page." });
+  }
+})
 
 app.listen(port, () => {
     console.log(`Server running on port ${port}.`)
