@@ -37,6 +37,7 @@ const UserPage = () => {
     const [imageIndex, setImageIndex] = useState<number>(0)
     const imagesToChoose = [prof0, prof1, prof2, prof3, prof4, prof5, prof6, prof7, prof8, prof9];
     const isUserInfoAvailable = username !== null && email !== null;
+    const [hasChanged, setHasChanged] = useState(false)
 
     const { error, isError, mutate } = useMutation({
         mutationFn: ({ email, username, bio, pfp }: { email: string | null, username: string | null, bio: string | null, pfp: number }) => 
@@ -106,6 +107,18 @@ const UserPage = () => {
             username, 
             pfp: imageIndex 
         });
+
+        setHasChanged(false)
+    }
+
+    const handleBioChange = (e: any) => {
+        const value = e.target.value
+        setHasChanged(value !== bio)
+    }
+
+    const handlePfpChange = (e: any) => {
+        const value = e.target.value
+        setHasChanged(value === bio)
     }
 
     return (
@@ -122,6 +135,7 @@ const UserPage = () => {
                             {imagesToChoose.map((img, id) => (
                                 <img src={img} alt={`Avatar Image ${id}`} key={id} loading="lazy" className="sad-w-16 sad-cursor-pointer sad-rounded-full" onClick={() => {
                                     setImageIndex(id)
+                                    setHasChanged(pfp !== id)
                                 }}/>
                             ))}
                         </div>
@@ -130,7 +144,7 @@ const UserPage = () => {
                         <h1 className="sad-text-3xl sad-font-bold sad-text-center sad-w-full">{username}</h1>
                         <form action="POST" className="sad-w-full" onSubmit={handleSubmit(onSubmitt)}>
                             <p className="sad-mt-6">Your BIO here</p>
-                            <textarea
+                            <textarea 
                             { ...register("bio") }
 
                             className={clsx(
@@ -139,8 +153,9 @@ const UserPage = () => {
                             )}
                             rows={3}
                             cols={40}
+                            onChange={handleBioChange}
                             />
-                            <button className="sad-mt-10 sad-my-1 sad-text-xl sad-py-1 sad-px-4 sad-rounded sad-text-gray-800 sad-w-fit sad-bg-blue-500 sad-font-bold">Save</button>
+                            <button disabled = {!hasChanged} className="sad-mt-10 sad-my-1 sad-text-xl sad-py-1 sad-px-4 sad-rounded sad-text-gray-900 sad-w-fit sad-bg-blue-500 sad-font-bold sad-shadow-lg sad-shadow-black hover:sad-bg-blue-600 sad-duration-150 disabled:sad-bg-red-500 disabled:sad-cursor-not-allowed">Save</button>
                             {errors.bio && <span className="sad-text-red-500">{errors.bio.message}</span>}
                             {isError && <span className="sad-text-red-500">{(error as any)?.message || 'Error submitting form data'}</span>}
                         </form>
