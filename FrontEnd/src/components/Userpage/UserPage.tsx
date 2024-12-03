@@ -38,6 +38,7 @@ const UserPage = () => {
     const imagesToChoose = [prof0, prof1, prof2, prof3, prof4, prof5, prof6, prof7, prof8, prof9];
     const isUserInfoAvailable = username !== null && email !== null;
     const [hasChanged, setHasChanged] = useState(false)
+    const [message, setMessage] = useState("")
 
     const { error, isError, mutate } = useMutation({
         mutationFn: ({ email, username, bio, pfp }: { email: string | null, username: string | null, bio: string | null, pfp: number }) => 
@@ -109,6 +110,11 @@ const UserPage = () => {
         });
 
         setHasChanged(false)
+        setMessage("Profile Page updated successfully!")
+
+        setTimeout(() => {
+            setMessage("")
+        }, 3000)
     }
 
     const handleBioChange = (e: any) => {
@@ -155,6 +161,9 @@ const UserPage = () => {
                             cols={40}
                             onChange={handleBioChange}
                             />
+
+                            <p className="sad-absolute sad-text-green-500 sad-font-semibold sad-capitalize">{message}</p>
+
                             <button disabled = {!hasChanged} className="sad-mt-10 sad-my-1 sad-text-xl sad-py-1 sad-px-4 sad-rounded sad-text-gray-900 sad-w-fit sad-bg-blue-500 sad-font-bold sad-shadow-lg sad-shadow-black hover:sad-bg-blue-600 sad-duration-150 disabled:sad-bg-red-500 disabled:sad-cursor-not-allowed">Save</button>
                             {errors.bio && <span className="sad-text-red-500">{errors.bio.message}</span>}
                             {isError && <span className="sad-text-red-500">{(error as any)?.message || 'Error submitting form data'}</span>}

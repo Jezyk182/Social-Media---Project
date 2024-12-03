@@ -62,7 +62,6 @@ const FormLogIn: React.FC = () => {
     e?.preventDefault
     mutate(fData)
     console.log("Mutate data: " + data)
-    // mutate(fData)
   };
 
   return (
